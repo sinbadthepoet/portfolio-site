@@ -1,5 +1,7 @@
-Hello World! We love gaming.
+---
+layout: default
+title: About
+---
+# About page
 
-# AIN'T IT
-
-We sure do.
+This page tells you a little bit about me.
