@@ -1,0 +1,78 @@
+/* Use Inter (thin weight) with a fallback */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Inter', "Helvetica Neue", Arial, sans-serif;
+  font-weight: 200; /* Thin weight */
+  background: #f5f5f5; /* Just an example background */
+}
+
+/* The vertical nav container, scaled by viewport height */
+.navParent {
+  position: absolute;
+  top: 50%;
+  right: 2vw;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  /* Control overall nav size: scale with the window (e.g., 50% of vh) */
+  height: 50vh; 
+}
+
+/* Each “bubble” row. We’ll also set up the “bounce in” animation. */
+.navBubbleContainer {
+  display: flex;
+  align-items: center;
+  margin: 1vh 0;
+
+  /* Bouncing from right to final position */
+  animation: bounceInFromRight 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* Stagger each bubble’s start time so they settle in sequence */
+.navBubbleContainer:nth-child(1) { animation-delay: 0.0s; }
+.navBubbleContainer:nth-child(2) { animation-delay: 0.1s; }
+.navBubbleContainer:nth-child(3) { animation-delay: 0.2s; }
+.navBubbleContainer:nth-child(4) { animation-delay: 0.3s; }
+/* …etc. Add more if needed */
+
+/* The text label is hidden (opacity 0) until hover */
+.navBubbleContainer .navText {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  /* Scale text to viewport height so it shrinks/grows as the window changes */
+  font-size: 2vh; 
+  margin-right: 1vh;
+}
+
+/* When hovered over the container, show the text */
+.navBubbleContainer:hover .navText {
+  opacity: 1;
+}
+
+/* The round icon – scale it with viewport height so it shrinks/grows */
+.navBubbleContainer a img {
+  display: block;
+  width: 5vh;
+  height: 5vh;
+  /* No box-shadow or border, since your SVGs will handle that */
+}
+
+/* Keyframes for the “bounce in from right” effect */
+@keyframes bounceInFromRight {
+  0% {
+    transform: translateX(150%);
+  }
+  60% {
+    transform: translateX(-10%);
+  }
+  80% {
+    transform: translateX(5%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
