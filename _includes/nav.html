@@ -1,0 +1,12 @@
+<div>
+    {% for item in site.data.navigation %}
+        <div class="NavBubble">
+            <div>
+                {{ item.name }}
+            </div>
+            <a href="{{ item.link }}">
+                <img src="{{ item.icon }}" alt="{{ item.name }}">
+            </a>
+        </div>
+    {% endfor %}
+</div>

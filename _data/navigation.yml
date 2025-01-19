@@ -1,18 +1,15 @@
-- name: Blog
-  link: /
-  icon: "blog.png"
 - name: Email
-  link: /
-  icon: "Email.png"
+  link: mailto:Haiderali360@gmail.com
+  icon: "assets/images/Email.png"
 - name: Itch.io
   link: /
-  icon: "Itch.png"
+  icon: "assets/images/Itch.png"
 - name: Steam
   link: /
-  icon: "Steam.png"
+  icon: "assets/images/Steam.png"
 - name: Twitter
   link: /
-  icon: "Twitter.png"
+  icon: "assets/images/Twitter.png"
 - name: LinkedIn
   link: /
-  icon: "Linkedin.png"
+  icon: "assets/images/Linkedin.png"
