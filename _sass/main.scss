@@ -125,7 +125,7 @@
   animation: fadeOut 2.5s forwards;
 }
 
-.flicker_text_in {
+.flicker_in {
   font-family: "Inter", serif;
   font-optical-sizing: auto;
   font-weight: 200;
@@ -133,7 +133,7 @@
   animation: flickerIn 2s forwards;
 }
 
-.flicker_text_out {
+.flicker_out {
   font-family: "Inter", serif;
   font-optical-sizing: auto;
   font-weight: 200;
@@ -141,7 +141,7 @@
   animation: flickerOut 2s forwards;
 }
 
-.right_bounce_text {
+.right_bounce {
   font-family: "Inter", serif;
   font-optical-sizing: auto;
   font-weight: 200;
