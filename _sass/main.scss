@@ -1,0 +1,151 @@
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+ }
+
+ @keyframes flickerIn {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  15% {
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 0.9;
+  }
+  30% {
+    opacity: 0.1;
+  }
+  45% {
+    opacity: 0.8;
+  }
+  60% {
+    opacity: 0.4;
+  }
+  80% {
+    opacity: 0.9;
+  }
+}
+
+// Flicker Out Animation
+@keyframes flickerOut {
+  0% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  35% {
+    opacity: 0.9;
+  }
+  45% {
+    opacity: 0.3;
+  }
+  55% {
+    opacity: 0.8;
+  }
+  70% {
+    opacity: 0.2;
+  }
+  85% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes bounceInRight {
+  0% {
+    transform: translateX(600px);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(-25px);
+    opacity: 0.8;
+  }
+  80% {
+    transform: translateX(10px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+ }
+
+.p {
+  font-family: "Inter", serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+}
+
+// Flicker Out Animation
+@keyframes flickerOut {
+  0% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  35% {
+    opacity: 0.9;
+  }
+  45% {
+    opacity: 0.3;
+  }
+  55% {
+    opacity: 0.8;
+  }
+  70% {
+    opacity: 0.2;
+  }
+  85% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.splash_title {
+  font-family: "Inter", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 4em;
+  animation: fadeOut 2.5s forwards;
+}
+
+.flicker_in {
+  font-family: "Inter", serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+  animation: flickerIn 2s forwards;
+}
+
+.flicker_out {
+  font-family: "Inter", serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+  animation: flickerOut 2s forwards;
+}
+
+.right_bounce {
+  font-family: "Inter", serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+  text-align: right;
+  animation: bounceInRight 1s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
+ }
