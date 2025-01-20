@@ -4,22 +4,13 @@
 
 // Variables
 $font-stack: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-$font-weight-thin: 200;
-$background-color: #f5f5f5;
-$text-color: #1C252D;
+$font-weight-thin: 100;
+$text-color: #000000;
 $nav-position-right: 2vw;
 $nav-height: 50vh;
 $bubble-size: 5vh;
 $text-size: 2vh;
 $animation-timing: cubic-bezier(0.36, 0, 0.66, -0.56);
-
-// Base styles
-body {
-  margin: 0;
-  font-family: $font-stack;
-  font-weight: $font-weight-thin;
-  background: $background-color;
-}
 
 // Navigation styles
 .navParent {
