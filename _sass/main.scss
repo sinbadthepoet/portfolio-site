@@ -161,3 +161,65 @@ h2 {
 body {
     background-color: #EFF1F5;
 }
+
+.postContentBox {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin-top: 5rem;
+  height: 85vh;
+
+  h1, h2{
+    font-weight: 900;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 0.9;
+  }
+
+  h1{
+    font-size: 6rem;
+  }
+
+  h2{
+    font-size: 1rem;
+  }
+
+  
+  
+  .Viewport {
+    flex: 0 1 25rem;
+  }
+  
+  .TextColumn {
+    flex: 0 0 35rem;
+    display: flex;
+    flex-direction: column;
+    
+    .HeadingBox{
+      margin-bottom: 2rem;
+    }
+
+    .ContentBox{
+      flex: auto;
+    }
+    
+    .Buttons{
+      display: flex;
+      width: auto;
+      flex-flow: row nowrap;
+      
+      a{
+        color: black;
+        flex-grow: 1;
+        text-decoration: none;
+        border: 0.2rem solid black;
+        background-color: white;
+        text-align: center;
+        font-size: 3rem;
+        border-radius: 1rem;
+  
+      }
+    }
+  }
+}
+
