@@ -1,0 +1,29 @@
+<div class="siteHeader">
+    <h1>MS-18E Kampfer</h1>
+    <h2>Zeon Mobile Suit</h2>
+    <h2>Portfolio Armory of Haider Ali</h2>
+</div>
+
+<div class="siteClock">
+    <div id="liveClock">00:00:00</div>
+</div>
+
+<script>
+    function startClock() {
+  const clockEl = document.getElementById('liveClock');
+  if (!clockEl) return;
+
+  setInterval(() => {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    clockEl.textContent = `${hours}:${minutes}:${seconds}`;
+  }, 1000);
+}
+
+// Start when DOM is ready
+document.addEventListener('DOMContentLoaded', startClock);
+
+</script>
+  

@@ -1,0 +1,43 @@
+/* Basic resets or body styling */
+body {
+  margin: 0;
+  font-family: 'Inter', "Helvetica Neue", Arial, sans-serif;
+  font-weight: 200; /* Thin weight */
+  background: #f5f5f5; /* Example background */
+  color: #000;
+}
+
+/* ========== HEADER (top-left) ========== */
+.siteHeader {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+
+  /* Vertical stacking of the lines */
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  
+  /* Tweak fonts, sizes, etc. */
+  font-size: 1rem; /* or use "vh" if you want scaling by viewport size */
+  line-height: 1.2;
+  pointer-events: none; /* If you don't need user interaction here */
+}
+
+.siteHeader h1,
+.siteHeader h2 {
+  margin: 0;
+}
+
+/* ========== CLOCK (top-right) ========== */
+.siteClock {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  pointer-events: none; /* optional if there's no user interaction */
+}
+
+/* Style for the clock text itself */
+#liveClock {
+  font-size: 1.2rem;
+}
