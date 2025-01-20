@@ -1,5 +1,5 @@
 ---
-layout: limb
+layout: aboutme
 title: About Me
 heading: Haider Ali
 subheading: Game Designer with Technical Experience
