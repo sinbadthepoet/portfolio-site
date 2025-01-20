@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap');
+
+//Variables
+$font-stack: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+$font-weight-thin: 200;
+$font-weight-normal: 400;
+$font-weight-thick: 800;
+
+.header {
+  font-family: $font-stack;
+  font-size: 120px;
+  font-weight: $font-weight-thick;
+}
+
+.sub_header {
+  font-family: $font-stack;
+  font-size: 64px;
+  font-weight: $font-weight-thick;
+}
+
+.button {
+  border-width: 2px 2px 2px 2px;
+  border-radius: 10px;
+  border-color: black;
+  font-family: $font-weight-thin;
+  padding: 10px;
+}
