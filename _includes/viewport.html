@@ -1,0 +1,45 @@
+<canvas id="myCanvas"></canvas>
+
+  <script type="module">
+    import * as THREE from '/assets/js/threejs/three.module.min.js';
+
+    // 1. Set up the scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,                  // FOV
+      window.innerWidth / window.innerHeight, // aspect ratio
+      0.1,                 // near clipping
+      1000                // far clipping
+    );
+    camera.position.z = 3; // move the camera a bit back from origin
+
+    const canvasEl = document.getElementById('myCanvas');
+    const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // 2. Add a geometry (box), a basic material, and create a mesh
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshNormalMaterial();
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    // 3. Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Rotate the cube a little each frame
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+
+      // Render the scene through the camera
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // 4. Handle resizing
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
