@@ -81,13 +81,6 @@
   }
  }
 
-.p {
-  font-family: "Inter", serif;
-  font-optical-sizing: auto;
-  font-weight: 100;
-  font-style: normal;
-}
-
 // Flicker Out Animation
 @keyframes flickerOut {
   0% {
@@ -149,6 +142,21 @@
   text-align: right;
   animation: bounceInRight 1s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
  }
+
+* {
+    font-family: "Inter", serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+  
+h1 {
+    font-weight: 800;
+}
+  
+h2 {
+    font-weight: 200;
+}
 
 body {
     background-color: #EFF1F5;
