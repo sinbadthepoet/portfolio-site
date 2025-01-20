@@ -1,4 +1,4 @@
 ---
-layout: hanger
+layout: dashboard
 title: About Me
 ---
