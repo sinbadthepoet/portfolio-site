@@ -1,0 +1,12 @@
+footer {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  
+  width: 70vw;  /* spanning ~70% of the screen width */
+  max-width: 70vw; /* ensure it doesn't overflow horizontally */
+  font-size: 0.9rem;
+
+  /* If you want it to wrap at a certain point, let it do so naturally */
+  line-height: 1.4;
+}

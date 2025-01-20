@@ -1,0 +1,23 @@
+.siteHeader {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  
+  font-size: 1rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.siteHeader h1,
+.siteHeader h2 {
+  font-weight: 100;
+  margin: 0;
+}
+
+.siteHeader h1 {
+  font-size: 3.5em;
+}
+
+.siteHeader h2 {
+  font-size: 1.65em;
+}
