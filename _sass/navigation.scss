@@ -1,78 +1,98 @@
-/* Use Inter (thin weight) with a fallback */
+// Import fonts
+@use 'sass:math';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap');
 
+// Variables
+$font-stack: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+$font-weight-thin: 200;
+$background-color: #f5f5f5;
+$text-color: #1C252D;
+$nav-position-right: 2vw;
+$nav-height: 50vh;
+$bubble-size: 5vh;
+$text-size: 2vh;
+$animation-timing: cubic-bezier(0.36, 0, 0.66, -0.56);
+
+// Base styles
 body {
   margin: 0;
-  font-family: 'Inter', "Helvetica Neue", Arial, sans-serif;
-  font-weight: 200; /* Thin weight */
-  background: #f5f5f5; /* Just an example background */
+  font-family: $font-stack;
+  font-weight: $font-weight-thin;
+  background: $background-color;
 }
 
-/* The vertical nav container, scaled by viewport height */
+// Navigation styles
 .navParent {
   position: absolute;
   top: 50%;
-  right: 2vw;
+  right: $nav-position-right;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  /* Control overall nav size: scale with the window (e.g., 50% of vh) */
-  height: 50vh; 
+  height: $nav-height;
 }
 
-/* Each “bubble” row. We’ll also set up the “bounce in” animation. */
 .navBubbleContainer {
   display: flex;
   align-items: center;
   margin: 1vh 0;
+  animation: bounceInFromRight 1s $animation-timing forwards;
 
-  /* Bouncing from right to final position */
-  animation: bounceInFromRight 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  // Stagger animations for each bubble
+  @for $i from 1 through 5 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+
+  // Navigation text
+  .navText {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    font-size: $text-size;
+    margin-right: 1vh;
+    font-size: 36px;
+    font-weight: 100;
+    color: $text-color;
+  }
+
+  &:hover {
+    .navText {
+      opacity: 1;
+    }
+  }
+
+  // Navigation icons
+  a {
+    img {
+      display: block;
+      width: $bubble-size;
+      height: $bubble-size;
+    }
+  }
 }
 
-/* Stagger each bubble’s start time so they settle in sequence */
-.navBubbleContainer:nth-child(1) { animation-delay: 0.0s; }
-.navBubbleContainer:nth-child(2) { animation-delay: 0.1s; }
-.navBubbleContainer:nth-child(3) { animation-delay: 0.2s; }
-.navBubbleContainer:nth-child(4) { animation-delay: 0.3s; }
-/* …etc. Add more if needed */
-
-/* The text label is hidden (opacity 0) until hover */
-.navBubbleContainer .navText {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  /* Scale text to viewport height so it shrinks/grows as the window changes */
-  font-size: 2vh; 
-  margin-right: 1vh;
-}
-
-/* When hovered over the container, show the text */
-.navBubbleContainer:hover .navText {
-  opacity: 1;
-}
-
-/* The round icon – scale it with viewport height so it shrinks/grows */
-.navBubbleContainer a img {
-  display: block;
-  width: 5vh;
-  height: 5vh;
-  /* No box-shadow or border, since your SVGs will handle that */
-}
-
-/* Keyframes for the “bounce in from right” effect */
+// Animation keyframes
 @keyframes bounceInFromRight {
   0% {
-    transform: translateX(150%);
+    transform: translateX(600px);
+    opacity: 0;
   }
+
   60% {
-    transform: translateX(-10%);
+    transform: translateX(-25px);
+    opacity: 0.8;
   }
+
   80% {
-    transform: translateX(5%);
+    transform: translateX(10px);
+    opacity: 0.9;
   }
+
   100% {
     transform: translateX(0);
+    opacity: 1;
   }
 }

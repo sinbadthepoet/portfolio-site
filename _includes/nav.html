@@ -2,7 +2,7 @@
     {% for item in site.data.navigation %}
       <div class="navBubbleContainer">
         <div class="navText">
-          {{ item.name | capitalize }}
+          {{ item.name | upcase }}
         </div>
         <a href="{{ item.link }}" target="_blank" rel="noopener">
           <img src="{{ item.icon }}" alt="{{ item.name }}">
