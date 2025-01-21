@@ -60,9 +60,12 @@
     
     // Rotation physics parameters
     let angularVelocity = 0;
-    const friction = 0.95; // Affects how quickly the rotation slows down (0-1)
-    const velocityMultiplier = 0.3; // Affects how much "force" initial rotation has
-    const minimumVelocity = 0.001; // Velocity threshold to stop rotation
+    const friction = 0.95;
+    const velocityMultiplier = 0.3;
+    const minimumVelocity = 0.001;
+    const velocityThreshold = 0.1;
+    const constantRotationSpeed = 0.01;
+    let isConstantRotation = false;
 
     // Animation parameters
     const targetY = 1;
@@ -70,21 +73,32 @@
     const moveSpeed = 0.02;
     let animationComplete = false;
 
+    // Helper function to get mouse position relative to canvas
+    function getMousePosition(event) {
+      const rect = container.getBoundingClientRect();
+      return {
+        x: ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        y: -((event.clientY - rect.top) / rect.height) * 2 + 1
+      };
+    }
+
     // Mouse event handlers
     function onMouseDown(event) {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      const mousePos = getMousePosition(event);
+      mouse.x = mousePos.x;
+      mouse.y = mousePos.y;
       
       raycaster.setFromCamera(mouse, camera);
       const intersects = raycaster.intersectObject(cube);
       
       if (intersects.length > 0) {
         isDragging = true;
+        isConstantRotation = false;
         previousMousePosition = {
           x: event.clientX,
           timestamp: event.timeStamp
         };
-        angularVelocity = 0; // Reset velocity when grabbing
+        angularVelocity = 0;
       }
     }
 
@@ -110,11 +124,15 @@
 
     function onMouseUp() {
       isDragging = false;
+      if (Math.abs(angularVelocity) > velocityThreshold) {
+        isConstantRotation = true;
+        angularVelocity = Math.sign(angularVelocity) * constantRotationSpeed;
+      }
     }
 
     // Add event listeners
-    window.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('mousemove', onMouseMove);
+    container.addEventListener('mousedown', onMouseDown);
+    container.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
 
     // Animation loop
@@ -128,10 +146,14 @@
       } else {
         animationComplete = true;
 
-        // Apply inertial rotation when not dragging
-        if (!isDragging && Math.abs(angularVelocity) > minimumVelocity) {
-          cube.rotation.y += angularVelocity;
-          angularVelocity *= friction; // Apply friction
+        // Apply rotation
+        if (!isDragging) {
+          if (isConstantRotation) {
+            cube.rotation.y += angularVelocity;
+          } else if (Math.abs(angularVelocity) > minimumVelocity) {
+            cube.rotation.y += angularVelocity;
+            angularVelocity *= friction;
+          }
         }
       }
 
