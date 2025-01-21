@@ -7,9 +7,11 @@ title: Blog
   <div class="BlogEntryContainer">
     {% for post in site.posts %}
     <div class="Post">
+      <img src="{{ post.image }}" alt="{{ post.alt }}" style="width: 100%; height: auto;">
       <a href="{{ post.url }}"><h2>{{ post.title }}</h2></a>
       {{ post.excerpt }}
     </div>
     {% endfor %}
   </div>
+
 </div>

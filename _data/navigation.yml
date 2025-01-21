@@ -1,15 +1,15 @@
 - name: Email
   link: mailto:Haiderali360@gmail.com
-  icon: "assets/images/email.svg"
+  icon: "/assets/images/email.svg"
 - name: Itch.io
   link: https://sinbadthepoet.itch.io/
-  icon: "assets/images/itch.svg"
+  icon: "/assets/images/itch.svg"
 - name: Steam
   link: https://steamcommunity.com/id/haiderali360/
-  icon: "assets/images/steam.svg"
+  icon: "/assets/images/steam.svg"
 - name: Twitter
   link: https://twitter.com/sinbadthepoet
-  icon: "assets/images/twitter.svg"
+  icon: "/assets/images/twitter.svg"
 - name: LinkedIn
   link: https://www.linkedin.com/in/haideralisolar/
-  icon: "assets/images/linkedin.svg"
+  icon: "/assets/images/linkedin.svg"
