@@ -1,5 +1,6 @@
 <script type="module">
   import * as THREE from '/assets/js/threejs/three.module.min.js';
+  import { GLTFLoader } from '/assets/js/GLTFLoader.js';
 
   function init() {
     const container = document.getElementById('viewport');
@@ -20,7 +21,7 @@
     );
     camera.position.z = 8;
 
-    // 4. Create a scene & simple geometry (example: rotating cube)
+    // 4. Create a scene
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xEFF1F5);
 
@@ -29,23 +30,32 @@
     const divisions = 100;
     const gridHelper = new THREE.GridHelper(size, divisions, 0x808080, 0x808080);
     gridHelper.computeLineDistances();
-    gridHelper.material = new THREE.LineDashedMaterial({dashSize: 0.015, gapSize: 0.5, vertexColors: true});
+    gridHelper.material = new THREE.LineDashedMaterial({ dashSize: 0.015, gapSize: 0.5, vertexColors: true });
     gridHelper.rotation.x = 90;
     scene.add(gridHelper);
 
-    // Create the cube
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshNormalMaterial();
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-    cube.position.y = -5;
+    // Variable to store the head model
+    let headModel = null;
+
+    // Load the head
+    const headLoader = new GLTFLoader();
+    headLoader.load('/assets/models/Head.glb', function (gltf) {
+      headModel = gltf.scene;
+      headModel.position.y = -20; // Start position below
+      headModel.scale.set(0.9, 0.9, 0.9);
+      scene.add(headModel);
+    }, undefined, function (error) {
+      console.error(error);
+    });
 
     // Add ambient light to better see the scene
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 5.0);
     scene.add(ambientLight);
 
+    // Add spotlight
+
     // Add directional light for better depth perception
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 8.0);
     directionalLight.position.set(10, 10, 10);
     scene.add(directionalLight);
 
@@ -57,7 +67,7 @@
       x: 0,
       timestamp: 0
     };
-    
+
     // Rotation physics parameters
     let angularVelocity = 0;
     const friction = 0.95;
@@ -68,9 +78,9 @@
     let isConstantRotation = false;
 
     // Animation parameters
-    const targetY = 1;
+    const targetY = -15;
     const rotationSpeed = 0.02;
-    const moveSpeed = 0.02;
+    const moveSpeed = 0.025;
     let animationComplete = false;
 
     // Helper function to get mouse position relative to canvas
@@ -84,13 +94,15 @@
 
     // Mouse event handlers
     function onMouseDown(event) {
+      if (!headModel) return; // Exit if model hasn't loaded yet
+
       const mousePos = getMousePosition(event);
       mouse.x = mousePos.x;
       mouse.y = mousePos.y;
-      
+
       raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObject(cube);
-      
+      const intersects = raycaster.intersectObject(headModel, true);
+
       if (intersects.length > 0) {
         isDragging = true;
         isConstantRotation = false;
@@ -103,7 +115,7 @@
     }
 
     function onMouseMove(event) {
-      if (isDragging && animationComplete) {
+      if (isDragging && animationComplete && headModel) {
         const deltaMove = {
           x: event.clientX - previousMousePosition.x,
           time: event.timeStamp - previousMousePosition.timestamp
@@ -111,9 +123,9 @@
 
         // Calculate instantaneous velocity
         angularVelocity = (deltaMove.x / deltaMove.time) * velocityMultiplier;
-        
+
         // Apply rotation based on mouse movement
-        cube.rotation.y += deltaMove.x * 0.01;
+        headModel.rotation.y += deltaMove.x * 0.0025;
 
         previousMousePosition = {
           x: event.clientX,
@@ -139,20 +151,22 @@
     function animate() {
       requestAnimationFrame(animate);
 
-      // Initial animation to move cube up
-      if (!animationComplete && cube.position.y < targetY) {
-        cube.position.y += moveSpeed;
-        cube.rotation.y += rotationSpeed;
-      } else {
-        animationComplete = true;
+      if (headModel) {
+        // Initial animation to move head up
+        if (!animationComplete && headModel.position.y < targetY) {
+          headModel.position.y += moveSpeed;
+          headModel.rotation.y += rotationSpeed;
+        } else {
+          animationComplete = true;
 
-        // Apply rotation
-        if (!isDragging) {
-          if (isConstantRotation) {
-            cube.rotation.y += angularVelocity;
-          } else if (Math.abs(angularVelocity) > minimumVelocity) {
-            cube.rotation.y += angularVelocity;
-            angularVelocity *= friction;
+          // Apply rotation
+          if (!isDragging) {
+            if (isConstantRotation) {
+              headModel.rotation.y += angularVelocity;
+            } else if (Math.abs(angularVelocity) > minimumVelocity) {
+              headModel.rotation.y += angularVelocity;
+              angularVelocity *= friction;
+            }
           }
         }
       }
