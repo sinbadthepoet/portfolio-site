@@ -1,6 +1,21 @@
 ---
-layout: dashboard
+layout: default
 title: Projects
 ---
-
-Here is where we need to put the code that will populate our HTML file with an entry for each post.
+<h1 class="BlogHeader">PROJECTS</h1>
+<div class="contentcentering">
+  <div class="BlogEntryContainer">
+    {% for post in site.projects %}
+    <div class="Post">
+      <img src="{{ post.image }}" alt="{{ post.alt }}" style="width: 100%; height: auto;">
+      <a href="{{ post.url }}"><h2>{{ post.title }}</h2></a>
+      {{ post.tagline }}
+    </div>
+    {% endfor %}
+  </div>
+  <a href="/">
+    <div class="returnButton">
+      Back
+    </div>
+  </a>
+</div>

@@ -1,12 +1,4 @@
 ---
-layout: default
----
-<h1>{{ page.title }}</h1>
-<p>{{ page.author }}</p>
-
-{{ content }}
-
----
 layout: dashboard
 ---
 <div class="postContentBox">
@@ -18,10 +10,11 @@ layout: dashboard
       <h2>{{ page.date | date_to_string }}</h2>
     </div>
     <div class="ContentBox">
+      <img src"{{ page.image }}" alt="{{ page.alt }}" style="width: 100%; height: auto;">
       {{ content }}
     </div>
     <div class="Buttons">
-      <a href="/">
+      <a href="/blog.html">
         <div class="button">
           Back
         </div>
