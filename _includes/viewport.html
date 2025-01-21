@@ -1,45 +1,58 @@
-<canvas id="myCanvas"></canvas>
+<script type="module">
+  import * as THREE from '/assets/js/threejs/three.module.min.js';
 
-  <script type="module">
-    import * as THREE from '/assets/js/threejs/three.module.min.js';
+  function init() {
+  const container = document.getElementById('viewport');
 
-    // 1. Set up the scene, camera, and renderer
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,                  // FOV
-      window.innerWidth / window.innerHeight, // aspect ratio
-      0.1,                 // near clipping
-      1000                // far clipping
-    );
-    camera.position.z = 3; // move the camera a bit back from origin
+  // 1. Create the renderer and set its size to the container's current size
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
 
-    const canvasEl = document.getElementById('myCanvas');
-    const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+  // 2. Append the renderer’s DOM element (a <canvas>) into the container div
+  container.appendChild(renderer.domElement);
 
-    // 2. Add a geometry (box), a basic material, and create a mesh
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshNormalMaterial();
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+  // 3. Create a camera matching the container’s aspect ratio
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    container.clientWidth / container.clientHeight,
+    0.1,
+    1000
+  );
+  camera.position.z = 5;
 
-    // 3. Animation loop
-    function animate() {
-      requestAnimationFrame(animate);
+  // 4. Create a scene & simple geometry (example: rotating cube)
+  const scene = new THREE.Scene();
+  
+  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const material = new THREE.MeshNormalMaterial();
+  const cube = new THREE.Mesh(geometry, material);
+  
+  scene.add(cube);
 
-      // Rotate the cube a little each frame
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+  // 5. Animation loop
+  function animate() {
+    requestAnimationFrame(animate);
 
-      // Render the scene through the camera
-      renderer.render(scene, camera);
-    }
-    animate();
+    // Some rotation
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
 
-    // 4. Handle resizing
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  </script>
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // 6. Adjust if the container changes size – simplest is on window resize
+  window.addEventListener('resize', onWindowResize);
+
+  function onWindowResize() {
+    // Update renderer & camera if container changes with window
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
