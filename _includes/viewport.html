@@ -49,15 +49,17 @@
     });
 
     // Add ambient light to better see the scene
-    const ambientLight = new THREE.AmbientLight(0xffffff, 5.0);
+    const ambientLight = new THREE.AmbientLight(0xEFF1F5, 5.0);
     scene.add(ambientLight);
 
-    // Add spotlight
-
     // Add directional light for better depth perception
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 8.0);
+    const directionalLight = new THREE.DirectionalLight(0xEFF1F5, 8.0);
     directionalLight.position.set(10, 10, 10);
     scene.add(directionalLight);
+
+    // Add hemisphere light for softer shadows
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xEFF1F5, 10.0);
+    scene.add(hemiLight);
 
     // Mouse and physics parameters
     const raycaster = new THREE.Raycaster();
