@@ -1,12 +1,24 @@
 ---
 layout: dashboard
 ---
-{% include header.html %}
-
-{% include nav.html %}
-
-<body>
-  {{ content }}
-</body>
-
-{% include footer.html %}
+<div class="postContentBox">
+  <div class="Viewport">
+    {% include viewport.html %}
+  </div>
+  <div class="TextColumn">
+    <div class="HeadingBox">
+      <h1>{{ page.heading | upcase }}</h1>
+      <h2>{{ page.subheading | upcase }}</h2>
+    </div>
+    <div class="ContentBox">
+      {{ content }}
+    </div>
+    <div class="Buttons">
+      <a href="/">
+        <div class="button">
+          Learn More
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
