@@ -1,24 +1,28 @@
 ---
 layout: dashboard
 ---
-<div class="postContentBox">
+
+<div class="LimbContentWrapper">
+
   <div class="Viewport" id="viewport">
     {% include viewport.html %}
   </div>
+
   <div class="TextColumn">
     <div class="HeadingBox">
       <h1>{{ page.heading | upcase }}</h1>
       <h2>{{ page.subheading | upcase }}</h2>
     </div>
-    <div class="ContentBox">
+    <article class="ContentBox">
       {{ content }}
-    </div>
-    <div class="Buttons">
-      <a href="/">
-        <div class="button">
-          Learn More
+    </article>
+    <div class="ButtonContainer">
+      <a href="/hanger.html" class="button">
+        <div>
+            <h1>LEARN MORE</h1>
+            <img src="/assets/images/Down Arrow.svg" alt="Blog" style="height: 1rem; width: auto;">
         </div>
-      </a>
+    </a>
     </div>
   </div>
 </div>

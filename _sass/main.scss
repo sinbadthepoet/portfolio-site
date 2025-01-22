@@ -22,11 +22,11 @@ h1, h2{
 }
 
 h1{
-  font-size: 3rem;
+  font-size: clamp(2rem, 1.5vw, 3rem);
 }
 
 h2{
-  font-size: 1.65rem;
+  font-size: clamp(1rem, 1vw, 1.65rem);
 }
 
 footer {
@@ -36,6 +36,7 @@ footer {
 
 .RootContainer{
   height: 98.92vh; //Body and HTML Margins fuck it all up so here it is lol
+  max-height: 98.92vh;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
@@ -49,7 +50,7 @@ footer {
   flex-grow: 1;
   align-self: center;
 
-  max-width: 960px;
+  max-width: 1200px;
   width: 100%;
 
   display: flex;
@@ -61,8 +62,11 @@ footer {
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
+  max-width: 900px;
   justify-content: center;
   gap: 3rem;
+
+  margin-top: 0.5rem;
 
   .button{
     width:80px;
@@ -93,13 +97,35 @@ footer {
 
 }
 
+.Viewport{
+  width: 100%;
+  flex-grow: 1;
+}
 
-.postContentBox {
+.LimbContentWrapper{
+  margin-top: clamp(0.1rem, 1vw, 3rem);
   display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
-  margin-top: 5rem;
-  height: 85vh;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+
+  .Viewport{
+    flex-basis: 10rem;
+    flex-grow: 1;
+  }
+
+  .TextColumn{
+    flex-basis: 10rem;
+    flex-grow: 2;
+
+    display: flex;
+    flex-flow: column;
+  }
+}
+
+.HeadingBox{
+  margin-bottom: 2rem;
 
   h1, h2{
     font-weight: 900;
@@ -109,14 +135,47 @@ footer {
   }
 
   h1{
-    font-size: 6rem;
+    font-size: clamp(3rem, 7vw, 6rem);
   }
 
   h2{
-    font-size: 1rem;
+    font-size: clamp(0.1rem, 1vw, 1rem);
+  }
+}
+
+.ContentBox{
+  flex-grow: 1;
+  max-height: 50vh;
+  overflow: scroll;
+
+  p{
+    font-size: clamp(0.1rem, 1vw, 1.5rem);
   }
 
-  
+  h1{
+    font-size: 4rem;
+    font-weight: 600;
+  }
+
+  h2{
+    font-size: 3rem;
+    font-weight: 300;
+  }
+
+  img{
+    width: 100%;
+    height: auto;
+  }
+}
+
+//OLD
+
+.postContentBox {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin-top: 5rem;
+  height: 85vh;
   
   .Viewport {
     flex: 0 1 25rem;
@@ -127,9 +186,7 @@ footer {
     display: flex;
     flex-direction: column;
     
-    .HeadingBox{
-      margin-bottom: 2rem;
-    }
+    
 
     .ContentBox{
       flex: auto;
@@ -152,53 +209,6 @@ footer {
         border-radius: 1rem;
   
       }
-    }
-  }
-}
-
-.HangerContainer{
-  display: flex;
-  flex-flow: row nowrap;
-  height: 100vh;
-
-  a{
-    text-decoration: none;
-  }
-
-  .ButtonContainer{
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 12rem;
-    align-items: center;
-    
-
-    .button{
-      flex: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      align-items: center;
-      color: black;
-      font-size: 5rem;
-      letter-spacing: 0.5rem;
-    }
-
-    img {
-      height: 7rem;
-    }
-
-  }
-
-  .Viewport{
-    width: 60rem;
-  }
-
-  .White{
-    * {
-      pointer-events: none;
-      opacity: 0;
     }
   }
 }

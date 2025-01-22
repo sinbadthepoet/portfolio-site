@@ -1,9 +1,13 @@
 ---
 layout: dashboard
 ---
-<div class="postContentBox">
-  <div class="Viewport">
+
+<div class="LimbContentWrapper">
+
+  <div class="Viewport" id="viewport">
+    {% include viewport.html %}
   </div>
+
   <div class="TextColumn">
     <div class="HeadingBox">
       <h1>{{ page.heading | upcase }}</h1>
@@ -12,15 +16,17 @@ layout: dashboard
     <div class="ContentBox">
       {{ content }}
     </div>
-    <div class="Buttons">
-      <a href="/">
-        <div class="button">
-          Learn More
+    <div class="ButtonContainer">
+      <a href="/hanger.html" class="button">
+        <div>
+            <h1>LEARN MORE</h1>
+            <img src="/assets/images/Down Arrow.svg" alt="Blog" style="height: 1rem; width: auto;">
         </div>
       </a>
-      <a href="/">
-        <div class="button">
-          My Projects
+      <a href="/projects.html" class="button">
+        <div>
+            <h1>MY PROJECTS</h1>
+            <img src="/assets/images/Down Arrow.svg" alt="Blog" style="height: 1rem; width: auto;">
         </div>
       </a>
     </div>

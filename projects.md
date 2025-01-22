@@ -13,7 +13,7 @@ title: Projects
     </div>
     {% endfor %}
   </div>
-  <a href="/">
+  <a href="javascript:history.back()">
     <div class="returnButton">
       Back
     </div>
