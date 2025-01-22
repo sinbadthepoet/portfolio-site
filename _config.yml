@@ -17,12 +17,16 @@ defaults:
       type: "projects"
     values:
       layout: "project"
+      catergory: "PLACEHOLDER"
+      image: "/assets/images/blog/default.jpeg"
+      alt: "PLACEHOLDER"
   - scope:
       path: ""
       type: "posts"
     values:
       layout: "blog"
       image: "/assets/images/blog/default.jpeg"
+      alt: "PLACEHOLDER"
   - scope:
       path: ""
     values:

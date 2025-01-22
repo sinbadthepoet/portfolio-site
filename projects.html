@@ -1,0 +1,32 @@
+---
+layout: dashboard
+title: Projects
+---
+
+<div class="Entries">
+  {% for post in site.projects %}
+  <a href="{{ post.url }}">
+    <div class="Post HoverSelect">
+      <div class="PreviewImage">
+        <img src="{{ post.image }}" alt="{{ post.alt }}" style="width: 100%; height: auto;">
+      </div>
+      <div class="PostInfo">
+        <div class="PostTop">
+          <h1>{{ post.title }}</h1>
+          <h2>{{ post.catergory }}</h2>
+        </div>
+        <hr>
+        {{ post.excerpt }}
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+<div class="ButtonContainer">
+  <a href="/" class="button">
+    <div>
+        <h1>Go Back</h1>
+        <img src="/assets/images/Down Arrow.svg" alt="Blog" style="height: 1rem; width: auto;">
+    </div>
+  </a>
+</div>
