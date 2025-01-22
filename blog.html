@@ -17,9 +17,7 @@ title: Blog
           <h2>{{ post.date | date_to_string: "ordinal", "US" }}</h2>
         </div>
         <hr>
-        <div class="BlogPreview">
-          {{ post.excerpt }}
-        </div>
+        {{ post.excerpt }}
       </div>
     </div>
   </a>

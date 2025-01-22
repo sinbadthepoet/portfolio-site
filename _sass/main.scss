@@ -170,7 +170,7 @@ p{
 .ContentBox{
   flex: 1 1 0;
   min-height: 0;
-  overflow: scroll;
+  overflow-y: scroll;
 
   h1{
     font-size: 4rem;
@@ -194,7 +194,7 @@ p{
 
   flex: 1 1 0;
   min-height: 0;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .Post{
@@ -210,6 +210,8 @@ p{
 
   .PostInfo{
     width: 80%;
+    min-height: 0;
+    overflow-y: scroll;
   }
 
   .PreviewImage, .PostInfo{
@@ -223,11 +225,6 @@ p{
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: flex-start;
-  }
-
-  .BlogPreview{
-    max-height: 100px;
-    overflow: hidden;
   }
 }
 
