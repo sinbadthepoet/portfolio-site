@@ -1,13 +1,13 @@
 <div class="navParent">
-    {% for item in site.data.navigation %}
-      <div class="navBubbleContainer">
-        <div class="navText">
-          {{ item.name | upcase }}
-        </div>
-        <a href="{{ item.link }}" target="_blank" rel="noopener">
-          <img src="{{ item.icon }}" alt="{{ item.name }}">
-        </a>
-      </div>
-    {% endfor %}
-  </div>
+  {% for item in site.data.navigation %}
+    <div class="navBubbleContainer">
+      <h2 class="navText">
+        {{ item.name | upcase }}
+      </h2>
+      <a href="{{ item.link }}" target="_blank" rel="noopener">
+        <img src="{{ item.icon }}" alt="{{ item.name }}">
+      </a>
+    </div>
+  {% endfor %}
+</div>
   

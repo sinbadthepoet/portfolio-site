@@ -1,52 +1,26 @@
-// Import fonts
-@use 'sass:math';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap');
-
-// Variables
-$font-stack: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-$font-weight-thin: 100;
-$text-color: #000000;
-$nav-position-right: 0.5rem;
-$nav-height: 50vh;
-$bubble-size: 5vh;
-$text-size: 2vh;
-$animation-timing: cubic-bezier(0.36, 0, 0.66, -0.56);
-
 // Navigation styles
 .navParent {
-  position: absolute;
-  top: 50%;
-  right: $nav-position-right;
-  transform: translateY(-50%);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
-  align-items: flex-end;
-  height: $nav-height;
+  margin-top: 1rem;
+  gap: 5rem;
 }
 
 .navBubbleContainer {
   display: flex;
+  flex-flow: column-reverse nowrap;
   align-items: center;
-  margin: 0.5vh 0;
-  animation: bounceInFromRight 1s $animation-timing forwards;
+  width: 5rem;
 
-  // Stagger animations for each bubble
-  @for $i from 1 through 5 {
-    &:nth-child(#{$i}) {
-      animation-delay: #{$i * 0.1}s;
-    }
-  }
+  opacity: 0; //This is overriden by the animation, which will end
+  //it at 100. Without this, the button is during the delay.
 
   // Navigation text
   .navText {
     opacity: 0;
     transition: opacity 0.4s ease;
-    font-size: $text-size;
-    margin-right: 1vh;
-    font-size: 36px;
-    font-weight: 100;
-    color: $text-color;
+    font-size: 2rem;
   }
 
   &:hover {
@@ -54,36 +28,41 @@ $animation-timing: cubic-bezier(0.36, 0, 0.66, -0.56);
       opacity: 1;
     }
   }
+  
+  img {
+      width: 4rem;
+  }
 
-  // Navigation icons
-  a {
-    img {
-      display: block;
-      width: $bubble-size;
-      height: $bubble-size;
+  animation-duration: 1s;
+  animation-name: BounceInFromAbove;
+  animation-timing-function: cubic-bezier(0.300, 1.395, 0.275, 1.010);
+  animation-fill-mode: forwards;
+
+  @for $i from 1 through 5 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
     }
   }
 }
 
-// Animation keyframes
-@keyframes bounceInFromRight {
-  0% {
-    transform: translateX(600px);
+@keyframes BounceInFromAbove{
+  0%{
+    transform: translateY(-600px);
+    transform: translateZ(-1);
+    opacity: 0;
+  }
+  
+  20%{
     opacity: 0;
   }
 
-  60% {
-    transform: translateX(-25px);
-    opacity: 0.8;
+  99%{
+    transform: translateZ(-1);
   }
 
-  80% {
-    transform: translateX(10px);
-    opacity: 0.9;
-  }
-
-  100% {
-    transform: translateX(0);
+  100%{
+    transform: translateY(0px);
+    transform: translateZ(0);
     opacity: 1;
   }
 }
