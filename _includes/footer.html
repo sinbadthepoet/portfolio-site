@@ -1,3 +1,33 @@
-<footer>
-  All who view these schematics must agree to never take away control from the player if it's to do something cool [UNATCO Provision 04.51sec117]. Kampfer Model sourced from Gundam Breaker.
-</footer>
+<div class="FooterContainer">
+  <footer>
+    All who view these schematics must agree to never take away control from the player if it's to do something cool [UNATCO Provision 04.51sec117]. Kampfer Model sourced from Gundam Breaker.
+  </footer>
+
+  <div class="exposedInfo">
+    <p id="cursorPos">Cursor X: 0.0% Y: 0.0%</p>
+  
+    <!-- Placeholders for rig data until we’re ready to hook them up -->
+    <p id="currentAnimation">Current Animation: RestPose.anim</p>
+    <p id="animTime">AnimTime: 100.0%</p>
+    <p id="frameGenTime">Frame Gen Time: 16.7ms</p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('mousemove', (event) => {
+  const cursorPosEl = document.getElementById('cursorPos');
+  if (!cursorPosEl) return;
+
+  // Convert default top-left system to bottom-left system in percentages
+  const xPercent = (event.clientX / window.innerWidth) * 100;
+  // event.clientY is distance from TOP, so invert for bottom-left
+  const yPercent = (1 - (event.clientY / window.innerHeight)) * 100;
+
+  // Format to one decimal place
+  const xStr = xPercent.toFixed(1);
+  const yStr = yPercent.toFixed(1);
+
+  // Update the exposed info text
+  cursorPosEl.textContent = `Cursor X: ${xStr}% Y: ${yStr}%`;
+  });
+</script>

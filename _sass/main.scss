@@ -9,6 +9,12 @@
   
 body {
     background-color: #EFF1F5;
+    background-image: url(/assets/images/dot_matrix.png);
+}
+
+a{
+  text-decoration: none;
+  color:black;
 }
 
 h1, h2{
@@ -22,6 +28,71 @@ h1{
 h2{
   font-size: 1.65rem;
 }
+
+footer {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.RootContainer{
+  height: 98.92vh; //Body and HTML Margins fuck it all up so here it is lol
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+
+.HeaderContainer, .FooterContainer{
+  flex-shrink: 0;
+}
+
+.ContentContainer{
+  flex-grow: 1;
+  align-self: center;
+
+  max-width: 960px;
+  width: 100%;
+
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.ButtonContainer{
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+  justify-content: center;
+  gap: 3rem;
+
+  .button{
+    width:80px;
+    flex-grow: 1;
+
+    border: 0.2rem solid black;
+    background-color: #EFF1F5;
+
+    transition: background-color 0.4s ease;
+
+    text-align: center;
+    h1{
+      font-weight: 400;
+      transition: font-weight 0.4s ease;
+    }
+    img{
+      height: 1rem;
+      width: auto;
+    }
+
+    &:hover{
+      background-color: #FFFFFF;
+      h1{
+        font-weight: 900;
+      }
+    }
+  }
+
+}
+
 
 .postContentBox {
   display: flex;
@@ -154,21 +225,6 @@ h2{
 
   a{
     text-decoration: none;
-  }
-}
-
-.contentcentering{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-
-  a{
-    text-decoration: none;
-    color:black;
-    div{
-      font-weight: 300;
-      font-size: 1.5rem;
-    }
   }
 }
 

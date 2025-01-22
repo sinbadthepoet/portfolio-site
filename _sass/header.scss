@@ -16,10 +16,20 @@
 
     .Title {
       letter-spacing: 1rem;
+
+      transition: font-weight 0.4s ease;
+
+      &:hover{
+        font-weight: 900;
+      }
     }
+
+
   }
 
   .RTC {
     text-align: right;  // Align RTC to the right
   }
+
+  background-image: linear-gradient(to bottom, rgba(239, 241, 245, 1), rgba(239, 241, 245, 0));
 }

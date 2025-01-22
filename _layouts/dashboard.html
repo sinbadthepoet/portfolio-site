@@ -2,6 +2,10 @@
 layout: default
 title: Hanger
 ---
-{% include header.html %}
-
-{{ content }}
+<div class="RootContainer">
+    {% include header.html %}
+    <div class="ContentContainer">
+        {{ content }}
+    </div>
+    {% include footer.html %}
+</div>
