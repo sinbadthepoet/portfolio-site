@@ -34,21 +34,34 @@ footer {
   line-height: 1.4;
 }
 
+p{
+  font-weight: 200;
+}
+
 .RootContainer{
   height: 98.92vh; //Body and HTML Margins fuck it all up so here it is lol
   max-height: 98.92vh;
-  display: flex;
-  flex-flow: column nowrap;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
   justify-content: space-between;
 }
 
-.HeaderContainer, .FooterContainer{
-  flex-shrink: 0;
+.HeaderContainer{
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+.FooterContainer{
+  grid-row-start: 3;
+  grid-row-end: 4;
 }
 
 .ContentContainer{
-  flex-grow: 1;
-  align-self: center;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  justify-self: center;
 
   max-width: 1200px;
   width: 100%;
@@ -64,6 +77,8 @@ footer {
   width: 100%;
   max-width: 900px;
   justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
   gap: 3rem;
 
   margin-top: 0.5rem;
@@ -79,6 +94,8 @@ footer {
 
     text-align: center;
     h1{
+      white-space: nowrap;
+      font-size: clamp(0.8rem, 3vw, 2rem);
       font-weight: 400;
       transition: font-weight 0.4s ease;
     }
@@ -103,7 +120,6 @@ footer {
 }
 
 .LimbContentWrapper{
-  margin-top: clamp(0.1rem, 1vw, 3rem);
   display: flex;
   flex-flow: row nowrap;
   gap: 1rem;
@@ -116,12 +132,20 @@ footer {
   }
 
   .TextColumn{
-    flex-basis: 10rem;
-    flex-grow: 2;
-
-    display: flex;
-    flex-flow: column;
+    width: 50px;
   }
+}
+
+.TextColumn{
+  margin-top: clamp(0.1rem, 1vw, 3rem);
+  flex: 2 1 0;
+
+  width: 100%;
+
+  display: flex;
+  flex-flow: column;
+
+  min-height: 0;
 }
 
 .HeadingBox{
@@ -144,13 +168,9 @@ footer {
 }
 
 .ContentBox{
-  flex-grow: 1;
-  max-height: 50vh;
+  flex: 1 1 0;
+  min-height: 0;
   overflow: scroll;
-
-  p{
-    font-size: clamp(0.1rem, 1vw, 1.5rem);
-  }
 
   h1{
     font-size: 4rem;
@@ -168,76 +188,61 @@ footer {
   }
 }
 
-//OLD
+.Entries{
+  margin-top: clamp(0.1rem, 1vw, 3rem);
+  width: 100%;
 
-.postContentBox {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: scroll;
+}
+
+.Post{
   display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
-  margin-top: 5rem;
-  height: 85vh;
-  
-  .Viewport {
-    flex: 0 1 25rem;
+  width: 100%;
+  max-height: 182px;
+  background-color: #EFF1F5;
+
+  .PreviewImage{
+    width: 20%;
   }
-  
-  .TextColumn {
-    flex: 0 0 35rem;
-    display: flex;
-    flex-direction: column;
-    
-    
 
-    .ContentBox{
-      flex: auto;
-    }
-    
-    .Buttons{
-      display: flex;
-      width: auto;
-      flex-flow: row nowrap;
-      gap: 0.3rem;
-      
-      a{
-        color: black;
-        flex-grow: 1;
-        text-decoration: none;
-        border: 0.2rem solid black;
-        background-color: white;
-        text-align: center;
-        font-size: 3rem;
-        border-radius: 1rem;
-  
-      }
-    }
+  .PostInfo{
+    width: 80%;
   }
-}
 
-.BlogEntryContainer{
-  display:flex;
-  flex-flow: column wrap;
-  gap: 2rem;
-  justify-content: space-around;
-  width: 100rem;
-
-  .Post{
+  .PreviewImage, .PostInfo{
     border: 0.1rem solid #dddddd;
-    padding: 1rem;
-    text-align: center;
-    max-width: 20rem;
-    h2{
-      font-weight: 300;
-      color: black;
-      margin-top: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
+    margin: 0.4rem;
+    padding: 0.4rem;
   }
 
-  a{
-    text-decoration: none;
+  .PostTop{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .BlogPreview{
+    max-height: 100px;
+    overflow: hidden;
   }
 }
 
-.TextColumn.BlogPost{
-  flex: 0 0 60rem;
+.HoverSelect{
+  transition: background-color 0.4s ease;
+
+  h1{
+    transition: font-weight 0.4s ease;
+  }
+
+  &:hover{
+    background-color: #FFFFFF;
+    
+    h1{
+      font-weight: 900;
+    }
+  }
 }

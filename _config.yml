@@ -10,6 +10,8 @@ defaults:
       type: "limbs"
     values:
       layout: "limb"
+      heading: "PLACEHOLDER"
+      subheading: "PLACEHOLDER"
   - scope:
       path: ""
       type: "projects"
@@ -20,6 +22,7 @@ defaults:
       type: "posts"
     values:
       layout: "blog"
+      image: "/assets/images/blog/default.jpeg"
   - scope:
       path: ""
     values:

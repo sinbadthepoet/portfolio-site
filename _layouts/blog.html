@@ -1,22 +1,21 @@
 ---
-layout: default
+layout: dashboard
 ---
-<div class="postContentBox">
-  <div class="TextColumn BlogPost">
-    <div class="HeadingBox">
-      <h1>{{ page.title | upcase }}</h1>
-      <h2>{{ page.date | date_to_string }}</h2>
-    </div>
-    <div class="ContentBox">
-      <img src"{{ page.image }}" alt="{{ page.alt }}" style="width: 100%; height: auto;">
-      {{ content }}
-    </div>
-    <div class="Buttons">
-      <a href="/blog.html">
-        <div class="button">
-          Back
-        </div>
-      </a>
-    </div>
+<div class="TextColumn">
+  <div class="HeadingBox">
+    <h1>{{ page.title | upcase }}</h1>
+    <h2>{{ page.date | date_to_string }}</h2>
+  </div>
+  <article class="ContentBox">
+    <img src"{{ page.image }}" alt="{{ page.alt }}" style="width: 100%; height: auto;">
+    {{ content }}
+  </article>
+  <div class="ButtonContainer">
+    <a href="/blog.html" class="button">
+      <div>
+          <h1>Go Back</h1>
+          <img src="/assets/images/Down Arrow.svg" alt="Blog" style="height: 1rem; width: auto;">
+      </div>
+    </a>
   </div>
 </div>
