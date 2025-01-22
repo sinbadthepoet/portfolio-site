@@ -1,5 +1,48 @@
-<div class="siteHeader">
-    <h1>MS-18E KAMPFER</h1>
-    <h2>ZEON MOBILE SUIT</h2>
-    <h2>PORTFOLIO ARMORY OF HAIDER ALI</h2>
+<div class="Header">
+    <div class="KeyInfo">
+        <h1>MS-18E KAMPFER</h1>
+        <h2>ZEON MOBILE SUIT</h2>
+    </div>
+    <div class="CenterBar">
+        <div class="Title">
+            <h1>PORTFOLIO OF HAIDER ALI</h1>
+        </div>
+        <div class="nav"></div>
+    </div>
+    <div class="RTC">
+        <h2 id="liveClock">Sun, 19 Jan 2025 20:12:36 -0500</h2>
+        <script>
+            function updateClock() {
+              const now = new Date();
+              const options = { 
+                weekday: 'short', 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+              };
+              const rfc822Time = now.toLocaleString('en-US', options); 
+            
+              // Calculate timezone offset in minutes
+              const offsetMinutes = now.getTimezoneOffset(); 
+              const offsetHours = Math.floor(offsetMinutes / 60);
+              const offsetMinutesStr = Math.abs(offsetMinutes % 60).toString().padStart(2, '0');
+              const offsetSign = offsetHours >= 0 ? '-' : '+';
+              const offsetStr = `${offsetSign}${Math.abs(offsetHours)}${offsetMinutesStr}`;
+            
+              // Combine time and offset
+              const clockString = rfc822Time + ' ' + offsetStr;
+            
+              document.getElementById("liveClock").textContent = clockString;
+            }
+            
+            // Update the clock every second
+            setInterval(updateClock, 1000);
+            
+            // Initial call to display the time immediately
+            updateClock();
+        </script>
+    </div>
 </div>

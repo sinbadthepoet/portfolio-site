@@ -1,19 +1,25 @@
-.siteHeader {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-}
+.Header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: flex-start;
+  width: 100%;
 
-.siteHeader h1,
-.siteHeader h2 {
-  font-weight: 100;
-  margin: 0;
-}
+  .KeyInfo {
+    text-align: left;  // Align KeyInfo to the left
+  }
 
-.siteHeader h1 {
-  font-size: 3.5em;
-}
+  .CenterBar {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    text-align: center;  // Ensures the title is centered
 
-.siteHeader h2 {
-  font-size: 1.65em;
+    .Title {
+      letter-spacing: 1rem;
+    }
+  }
+
+  .RTC {
+    text-align: right;  // Align RTC to the right
+  }
 }
