@@ -6,10 +6,10 @@
     font-weight: 100;
     font-style: normal;
 }
-  
+
 body {
-    background-color: #EFF1F5;
-    background-image: url(/assets/images/dot_matrix.png);
+  background-color: #EFF1F5;
+  background-image: url(/assets/images/dot_matrix.png);
 }
 
 a{
@@ -30,13 +30,15 @@ h2{
 }
 
 footer {
-  font-size: clamp(0.675rem, 1vw, 0.9rem);
+  font-size: clamp(0.675rem, 1vw, 1rem);
   line-height: 1.4;
+  font-weight: 200;
 }
 
 p{
   font-weight: 200;
   font-size: clamp(0.75rem, 1vw, 1rem);
+  text-align: justify;
 }
 
 .RootContainer{
@@ -62,16 +64,15 @@ p{
 }
 
 .ContentContainer{
-  grid-row-start: 2;
-  grid-row-end: 3;
-  justify-self: center;
-
   max-width: 1200px;
   width: 100%;
 
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
 }
 
 .ButtonContainer{
@@ -190,10 +191,15 @@ p{
   img{
     width: 50%;
     height: auto;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2rem;
+    display: inline;
+    //margin-left: auto;
+    //margin-right: auto;
+    float:left;
+    margin: 1rem;
+  }
+
+  p{
+    display: inline;
   }
 }
 
@@ -251,4 +257,16 @@ p{
       font-weight: 900;
     }
   }
+}
+
+.barbaContainer{
+  grid-row-start: 2;
+  grid-row-end: 3;
+
+  grid-column-start: 1;
+  grid-column-end: 2;
+
+  width: 100%;
+
+  border: 2px solid red;
 }
