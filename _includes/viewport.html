@@ -1,17 +1,18 @@
-<script type="module">
-  import * as THREE from '/assets/js/threejs/three.module.min.js';
-  import { GLTFLoader } from '/assets/js/GLTFLoader.js';
-
-  function init() {
-    const container = document.getElementById('viewport');
-
+<div class="Viewport" id="viewport">
+  <script type="module">
+    import * as THREE from '/assets/js/threejs/three.module.min.js';
+    import { GLTFLoader } from '/assets/js/GLTFLoader.js';
+    
+    function init() {
+      const container = document.getElementById('viewport');
+      
     // 1. Create the renderer and set its size to the container's current size
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
-
+    
     // 2. Append the renderer's DOM element (a <canvas>) into the container div
     container.appendChild(renderer.domElement);
-
+    
     // 3. Create a camera matching the container's aspect ratio
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -24,15 +25,6 @@
     // 4. Create a scene
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xEFF1F5);
-
-    // Create grid helper
-    const size = 50;
-    const divisions = 100;
-    const gridHelper = new THREE.GridHelper(size, divisions, 0x808080, 0x808080);
-    gridHelper.computeLineDistances();
-    gridHelper.material = new THREE.LineDashedMaterial({ dashSize: 0.015, gapSize: 0.5, vertexColors: true });
-    gridHelper.rotation.x = 90;
-    scene.add(gridHelper);
 
     // Variable to store the head model
     let headModel = null;
@@ -47,11 +39,11 @@
     }, undefined, function (error) {
       console.error(error);
     });
-
+    
     // Add ambient light to better see the scene
     const ambientLight = new THREE.AmbientLight(0xEFF1F5, 5.0);
     scene.add(ambientLight);
-
+    
     // Add directional light for better depth perception
     const directionalLight = new THREE.DirectionalLight(0xEFF1F5, 8.0);
     directionalLight.position.set(10, 10, 10);
@@ -101,10 +93,10 @@
       const mousePos = getMousePosition(event);
       mouse.x = mousePos.x;
       mouse.y = mousePos.y;
-
+      
       raycaster.setFromCamera(mouse, camera);
       const intersects = raycaster.intersectObject(headModel, true);
-
+      
       if (intersects.length > 0) {
         isDragging = true;
         isConstantRotation = false;
@@ -125,7 +117,7 @@
 
         // Calculate instantaneous velocity
         angularVelocity = (deltaMove.x / deltaMove.time) * velocityMultiplier;
-
+        
         // Apply rotation based on mouse movement
         headModel.rotation.y += deltaMove.x * 0.0025;
 
@@ -143,12 +135,12 @@
         angularVelocity = Math.sign(angularVelocity) * constantRotationSpeed;
       }
     }
-
+    
     // Add event listeners
     container.addEventListener('mousedown', onMouseDown);
     container.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
-
+    
     // Animation loop
     function animate() {
       requestAnimationFrame(animate);
@@ -176,10 +168,10 @@
       renderer.render(scene, camera);
     }
     animate();
-
+    
     // Window resize handler
     window.addEventListener('resize', onWindowResize);
-
+    
     function onWindowResize() {
       const w = container.clientWidth;
       const h = container.clientHeight;
@@ -190,4 +182,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', init);
-</script>
+
+  barba.hooks.after(init);
+  </script>
+</div>
