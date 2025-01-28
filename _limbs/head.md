@@ -3,6 +3,7 @@ layout: aboutme
 title: About Me
 heading: Haider Ali
 subheading: Game Designer with Technical Experience
+model: Head.glb
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi euismod bibendum aliquet. Ut nisl nibh, lobortis quis auctor vel, mollis in justo. Donec pulvinar volutpat tempus. Duis hendrerit quam non ex viverra, vel faucibus mi fermentum. Aenean feugiat non orci vel tincidunt. Morbi rhoncus imperdiet lorem, quis vehicula massa ultricies imperdiet. Praesent nec imperdiet tortor, sed cursus mi. Ut pulvinar leo sed condimentum tincidunt. Nullam tincidunt porttitor augue, tempus malesuada erat posuere nec. Nulla aliquam, ex nec sollicitudin vulputate, ipsum orci volutpat ligula, eget cursus augue nisl et nunc.

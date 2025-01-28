@@ -121,6 +121,7 @@ p{
 .Viewport{
   width: 100%;
   flex-grow: 1;
+  min-width: 0;
 }
 
 .LimbContentWrapper{
