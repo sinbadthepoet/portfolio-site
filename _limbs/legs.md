@@ -1,4 +1,4 @@
 ---
 title: Technical Design
-model: Legs.glb
+model: Legs
 ---

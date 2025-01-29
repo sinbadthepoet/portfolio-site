@@ -1,4 +1,4 @@
 ---
 title: Game Design
-model: Core.glb
+model: Core
 ---
