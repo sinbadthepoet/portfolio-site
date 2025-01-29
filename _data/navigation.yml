@@ -7,9 +7,9 @@
 - name: Steam
   link: https://steamcommunity.com/id/haiderali360/
   icon: "/assets/images/steam.svg"
-- name: Twitter
-  link: https://twitter.com/sinbadthepoet
-  icon: "/assets/images/twitter.svg"
+- name: Bluesky
+  link: https://sinbad.bsky.social/
+  icon: "/assets/images/bsky.svg"
 - name: LinkedIn
   link: https://www.linkedin.com/in/haideralisolar/
   icon: "/assets/images/linkedin.svg"
