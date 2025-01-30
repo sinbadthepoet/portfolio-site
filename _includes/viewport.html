@@ -62,13 +62,12 @@
       const scene = new THREE.Scene();
 
       // LIGHTING
-      const directionalLight = new THREE.DirectionalLight(0xEFF1F5, 8.0);
-      directionalLight.position.set(10, 10, 10);
+      const directionalLight = new THREE.DirectionalLight(0xEFF1F5, 3.64);
+      directionalLight.position.set(5, 10, 7.5);
       scene.add(directionalLight);
 
-      const directionalLight2 = new THREE.DirectionalLight(0xEFF1F5, 2.18);
-      directionalLight2.position.set(-7, 0, 5);
-      scene.add(directionalLight2);
+      const ambientLight = new THREE.AmbientLight(0xEFF1F5, 1.2);
+      scene.add(ambientLight);
 
       // MODEL
       let Model = null;
@@ -257,6 +256,35 @@
     // HOOKS
     document.addEventListener('DOMContentLoaded', init);
     barba.hooks.after(init);
+
+    let lastFrameTime = performance.now();
+    const frameTimes = [];
+    const maxSamples = 10; // Adjust this for more smoothing
+
+    function updateFrameTime() {
+        const now = performance.now();
+        const frameTime = now - lastFrameTime;
+        lastFrameTime = now;
+
+        // Store the frame time
+        frameTimes.push(frameTime);
+
+        // Keep the sample size small for recent smoothing
+        if (frameTimes.length > maxSamples) {
+            frameTimes.shift(); // Remove the oldest value
+        }
+
+        // Compute the average
+        const avgFrameTime = frameTimes.reduce((a, b) => a + b, 0) / frameTimes.length;
+
+        // Update the DOM element
+        document.getElementById('frameGenTime').textContent = `Frame Gen Time: ${avgFrameTime.toFixed(1)}ms`;
+
+        requestAnimationFrame(updateFrameTime);
+    }
+
+    // Start tracking frame time
+    requestAnimationFrame(updateFrameTime);
 
   </script>
 </div>
