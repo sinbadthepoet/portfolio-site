@@ -1,4 +1,4 @@
 ---
 title: Narrative Design
-model: Left Arm
+model: Arms
 ---

@@ -26,7 +26,7 @@
     const TURNTABLE_RPM      = 6.0;
 
     // CAMERA
-    const CAMERA_Z           = 6.2;
+    const CAMERA_Z           = 15;
 
     /****************************************
      * HELPER: convert RPM to radians/frame
@@ -51,7 +51,7 @@
     
       // CAMERA
       const camera = new THREE.PerspectiveCamera(
-        75,
+        30,
         container.clientWidth / container.clientHeight,
         0.1,
         1000
@@ -74,28 +74,15 @@
       let Model = null;
       const modelName = "{{ page.model | default: 'Head' }}";
       const modelUrl = `/assets/models/${modelName}.glb`;
-      const normalUrl = `/assets/models/${modelName}.png`;
-
-      // TEXTURE LOADER
-      const textureLoader = new THREE.TextureLoader();
-      const normalMap = textureLoader.load(normalUrl);
 
       const ModelLoader = new GLTFLoader();
       ModelLoader.load(modelUrl, function (gltf) {
         Model = gltf.scene;
-        
-        // Apply normal map to all materials
-        Model.traverse((child) => {
-          if (child.isMesh && child.material) {
-            child.material.normalMap = normalMap;
-            child.material.needsUpdate = true;
-          }
-        });
 
         // Start transforms
         Model.position.y = INTRO_Y_START;
         Model.rotation.y = INTRO_ROT_OFFSET;
-        Model.scale.set(0.9, 0.9, 0.9);
+        //Model.scale.set(1.2, 1.2, 1.2);
 
         scene.add(Model);
       }, undefined, function (error) {
