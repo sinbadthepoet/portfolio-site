@@ -27,23 +27,23 @@
               };
               const rfc822Time = now.toLocaleString('en-US', options); 
             
-              // Calculate timezone offset in minutes
+              
               const offsetMinutes = now.getTimezoneOffset(); 
               const offsetHours = Math.floor(offsetMinutes / 60);
               const offsetMinutesStr = Math.abs(offsetMinutes % 60).toString().padStart(2, '0');
               const offsetSign = offsetHours >= 0 ? '-' : '+';
               const offsetStr = `${offsetSign}${Math.abs(offsetHours)}${offsetMinutesStr}`;
             
-              // Combine time and offset
+              
               const clockString = rfc822Time + ' ' + offsetStr;
             
               document.getElementById("liveClock").textContent = clockString;
             }
             
-            // Update the clock every second
+            
             setInterval(updateClock, 1000);
             
-            // Initial call to display the time immediately
+            
             updateClock();
         </script>
     </div>

@@ -12,32 +12,32 @@
       import * as THREE from '/assets/js/threejs/three.module.min.js';
       import { GLTFLoader } from '/assets/js/GLTFLoader.js';
     
-      // =========================
-      // WAYPOINT MARKER PARAMETERS
-      // =========================
-      // Note: "opacityTransitionTime" now defines the highlight transition duration.
+      
+      
+      
+      
       const WAYPOINT_PARAMS = {
         fontFamily: 'Inter, sans-serif',
         fontWeight: 'bold',
         fontSize: '2rem',
         textColor: '#666',
-        textOpacity: 1,             // Overall text opacity
+        textOpacity: 1,             
         underlineColor: '#666',
-        underlineThickness: '2px',  // Thickness for the underline & SVG line
-        opacityTransitionTime: 0.3  // Transition time (in seconds) for highlighting changes
+        underlineThickness: '2px',  
+        opacityTransitionTime: 0.3  
       };
     
-      // Global storage for waypoint markers and overlay elements
+      
       const markers = [];
       let waypointContainer;
       let svgOverlay;
     
-      // Global variables for raycasting and mouse interaction
+      
       let raycaster, mouse;
       const clickableMeshes = [];
-      let hoveredPart = null;  // Will be 'head', 'core', 'arms', or 'legs'
+      let hoveredPart = null;  
     
-      // Mapping for page navigation when clicked
+      
       const pageMapping = {
         head: "/limbs/head.html",
         core: "/limbs/chest.html",
@@ -45,16 +45,16 @@
         legs: "/limbs/legs.html"
       };
     
-      // Colors for the meshes (using THREE.Color)
-      const DEFAULT_MESH_COLOR = new THREE.Color(0xe7e7e7); // rgb(231,231,231)
-      const NON_HOVERED_MESH_COLOR = new THREE.Color(0xa2a2a2); // rgb(162,162,162)
+      
+      const DEFAULT_MESH_COLOR = new THREE.Color(0xe7e7e7); 
+      const NON_HOVERED_MESH_COLOR = new THREE.Color(0xa2a2a2); 
     
-      // Global variable for mesh color transition timing.
+      
       let lastColorUpdateTime = performance.now();
     
-      // ----------------------------------------------------
-      // Helper function to trigger navigation using Barba.js if available.
-      // ----------------------------------------------------
+      
+      
+      
       function navigateTo(url) {
         if (typeof barba !== 'undefined' && typeof barba.go === 'function') {
           barba.go(url);
@@ -63,18 +63,18 @@
         }
       }
     
-      // ----------------------------------------------------
-      // Create a waypoint marker defined by two container points:
-      // - textCenter: the anchor point for the text label.
-      // - lineTarget: the point the connecting line extends to.
-      // The alignment parameter defines how the text is aligned relative to textCenter.
-      // Valid values: 'left', 'center', 'right'.
-      // The assoc parameter links this marker to a given GLTF part.
-      // ----------------------------------------------------
+      
+      
+      
+      
+      
+      
+      
+      
       function createWaypointMarker(text, textCenter, lineTarget, alignment = 'center', assoc) {
         const marker = { text, textCenter, lineTarget, alignment, assoc };
     
-        // Create the HTML element for the text marker.
+        
         const markerDiv = document.createElement('div');
         markerDiv.classList.add('waypoint-marker');
         markerDiv.textContent = text;
@@ -84,16 +84,16 @@
         markerDiv.style.fontSize = WAYPOINT_PARAMS.fontSize;
         markerDiv.style.color = WAYPOINT_PARAMS.textColor;
         markerDiv.style.opacity = WAYPOINT_PARAMS.textOpacity;
-        // Allow pointer events so that the marker can receive hover/click events.
+        
         markerDiv.style.pointerEvents = 'auto';
         markerDiv.style.cursor = 'pointer';
-        // Underline using border-bottom for visual effect.
+        
         markerDiv.style.borderBottom = `${WAYPOINT_PARAMS.underlineThickness} solid ${WAYPOINT_PARAMS.underlineColor}`;
         markerDiv.style.textAlign = alignment;
-        // Enable CSS transitions for animated changes (opacity and color).
+        
         markerDiv.style.transition = `opacity ${WAYPOINT_PARAMS.opacityTransitionTime}s, color ${WAYPOINT_PARAMS.opacityTransitionTime}s`;
     
-        // When hovering over the marker, set hoveredPart accordingly.
+        
         markerDiv.addEventListener('mouseenter', (e) => {
           hoveredPart = marker.assoc;
           updateWaypointStyles();
@@ -104,7 +104,7 @@
           updateWaypointStyles();
           document.getElementById('hanger').style.cursor = 'default';
         });
-        // Also handle clicks on the marker.
+        
         markerDiv.addEventListener('click', (e) => {
           e.stopPropagation();
           navigateTo(pageMapping[marker.assoc]);
@@ -113,15 +113,15 @@
         waypointContainer.appendChild(markerDiv);
         marker.element = markerDiv;
     
-        // Create an SVG <line> element for the connecting line.
+        
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        // Set the stroke as the underlineColor (but we will control visibility via opacity).
+        
         line.setAttribute('stroke', WAYPOINT_PARAMS.underlineColor);
-        // Set transition on opacity.
+        
         line.style.transition = `opacity ${WAYPOINT_PARAMS.opacityTransitionTime}s`;
-        // Set stroke-width (using setAttribute is acceptable for non-animated properties).
+        
         line.setAttribute('stroke-width', WAYPOINT_PARAMS.underlineThickness.replace('px',''));
-        // Default full opacity.
+        
         line.style.opacity = '1';
         svgOverlay.appendChild(line);
         marker.lineElement = line;
@@ -129,39 +129,39 @@
         markers.push(marker);
       }
     
-      // ----------------------------------------------------
-      // Update positions of markers.
-      // ----------------------------------------------------
+      
+      
+      
       function updateWaypointMarkers() {
         markers.forEach(marker => {
-          // Get dimensions of the marker element.
+          
           const width = marker.element.offsetWidth;
           const height = marker.element.offsetHeight;
           
-          // Compute the left position based on alignment.
+          
           let left;
           if (marker.alignment === 'left') {
             left = marker.textCenter.x;
           } else if (marker.alignment === 'right') {
             left = marker.textCenter.x - width;
-          } else { // center
+          } else { 
             left = marker.textCenter.x - width / 2;
           }
           const top = marker.textCenter.y - height / 2;
           marker.element.style.transform = `translate(${left}px, ${top}px)`;
     
-          // Determine the starting x position for the connecting line.
+          
           let startX;
           if (marker.alignment === 'left') {
-            startX = left; // left edge
+            startX = left; 
           } else if (marker.alignment === 'right') {
-            startX = left + width; // right edge
-          } else { // center
-            startX = left + width / 2; // center
+            startX = left + width; 
+          } else { 
+            startX = left + width / 2; 
           }
-          const startY = top + height; // bottom of the text element
+          const startY = top + height; 
     
-          // Set the line endpoints: from the computed start to marker.lineTarget.
+          
           marker.lineElement.setAttribute('x1', startX);
           marker.lineElement.setAttribute('y1', startY);
           marker.lineElement.setAttribute('x2', marker.lineTarget.x);
@@ -169,10 +169,10 @@
         });
       }
     
-      // ----------------------------------------------------
-      // Update waypoint marker styles based on hoveredPart.
-      // Both the text marker and its connecting SVG line update their opacity.
-      // ----------------------------------------------------
+      
+      
+      
+      
       function updateWaypointStyles() {
         markers.forEach(marker => {
           if (hoveredPart && marker.assoc === hoveredPart) {
@@ -191,14 +191,14 @@
         });
       }
     
-      // ----------------------------------------------------
-      // Update mesh colors for smooth transition using the transition parameter.
-      // ----------------------------------------------------
+      
+      
+      
       function updateMeshColors() {
         const now = performance.now();
         let delta = now - lastColorUpdateTime;
-        // Compute a lerp factor based on the defined transition time.
-        // Transition time is in seconds, so convert to milliseconds.
+        
+        
         let lerpFactor = delta / (WAYPOINT_PARAMS.opacityTransitionTime * 1000);
         if (lerpFactor > 1) lerpFactor = 1;
     
@@ -214,11 +214,11 @@
         lastColorUpdateTime = now;
       }
     
-      // ----------------------------------------------------
-      // Mouse event handlers for raycasting on the canvas.
-      // ----------------------------------------------------
+      
+      
+      
       function onDocumentMouseMove(event) {
-        // If the event target is a waypoint marker, let its own handlers deal with it.
+        
         if (event.target.classList.contains('waypoint-marker')) {
           return;
         }
@@ -244,7 +244,7 @@
       }
     
       function onDocumentClick(event) {
-        // If clicking on a waypoint marker, let its own click handler handle navigation.
+        
         if (event.target.classList.contains('waypoint-marker')) {
           return;
         }
@@ -253,15 +253,15 @@
         }
       }
     
-      // =========================
-      // MAIN INITIALIZATION
-      // =========================
-      let renderer, camera; // Declare these globally for use in event handlers.
+      
+      
+      
+      let renderer, camera; 
       function init() {
         const container = document.getElementById('hanger');
         if (!container) return;
     
-        // Create overlay containers for the markers and SVG connector lines.
+        
         waypointContainer = document.createElement('div');
         waypointContainer.id = 'waypointContainer';
         waypointContainer.style.position = 'absolute';
@@ -269,7 +269,7 @@
         waypointContainer.style.left = '0';
         waypointContainer.style.width = '100%';
         waypointContainer.style.height = '100%';
-        // (No pointerEvents override here so that markers can be interactive.)
+        
         container.appendChild(waypointContainer);
     
         svgOverlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -282,9 +282,9 @@
         svgOverlay.style.pointerEvents = 'none';
         container.appendChild(svgOverlay);
     
-        // =========================
-        // THREE.JS SETUP (Scene, Camera, Renderer)
-        // =========================
+        
+        
+        
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -304,7 +304,7 @@
     
         const scene = new THREE.Scene();
     
-        // Lighting
+        
         const directionalLight = new THREE.DirectionalLight(0xEFF1F5, 2);
         directionalLight.position.set(5, 30, 30);
         directionalLight.castShadow = true;
@@ -320,7 +320,7 @@
         const ambientLight = new THREE.AmbientLight(0xEFF1F5, 2);
         scene.add(ambientLight);
     
-        // Ground plane to receive shadows.
+        
         const planeGeometry = new THREE.PlaneGeometry(20, 25);
         const planeMaterial = new THREE.ShadowMaterial();
         planeMaterial.opacity = 0.2;
@@ -330,14 +330,14 @@
         plane.position.z = -8;
         scene.add(plane);
     
-        // =========================
-        // MODEL LOADING (Head, Core, Arms, Legs)
-        // =========================
+        
+        
+        
         let Head = null, Core = null, Arms = null, Legs = null;
         const cast = true, recv = true;
         const ModelLoader = new GLTFLoader();
     
-        // Helper to set userData and push clickable meshes.
+        
         function processModel(gltf, partName) {
           const group = gltf.scene;
           group.traverse(child => {
@@ -369,9 +369,9 @@
           Legs = processModel(gltf, 'legs');
         }, undefined, function (error) { console.error(error); });
     
-        // =========================
-        // WINDOW RESIZE HANDLING
-        // =========================
+        
+        
+        
         window.addEventListener('resize', onWindowResize);
         function onWindowResize() {
           const w = container.clientWidth;
@@ -385,17 +385,17 @@
           updateWaypointMarkers();
         }
     
-        // =========================
-        // MOUSE EVENT HANDLERS (for canvas)
-        // =========================
+        
+        
+        
         raycaster = new THREE.Raycaster();
         mouse = new THREE.Vector2();
         container.addEventListener('mousemove', onDocumentMouseMove, false);
         container.addEventListener('click', onDocumentClick, false);
     
-        // =========================
-        // ANIMATION LOOP
-        // =========================
+        
+        
+        
         function animate() {
           requestAnimationFrame(animate);
           renderer.render(scene, camera);
@@ -404,14 +404,14 @@
         }
         animate();
     
-        // =========================
-        // Create waypoint markers with associations.
-        // Associations:
-        // 'head'    -> About Me
-        // 'core'    -> Game Design
-        // 'arms'    -> Narrative Design
-        // 'legs'    -> Technical Foundations
-        // =========================
+        
+        
+        
+        
+        
+        
+        
+        
         createWaypointMarker('About Me', { x: 650, y: 100 }, { x: 585, y: 150 }, 'left', 'head');
         createWaypointMarker('Game Design', { x: 400, y: 300 }, { x: 470, y: 300 }, 'right', 'core');
         createWaypointMarker('Narrative Design', { x: 900, y: 450 }, { x: 820, y: 400 }, 'left', 'arms');
@@ -423,13 +423,13 @@
         }
       }
     
-      // HOOKS
+      
       document.addEventListener('DOMContentLoaded', init);
       barba.hooks.after(init);
     
-      // =========================
-      // FRAME TIME TRACKING (Existing Code)
-      // =========================
+      
+      
+      
       let lastFrameTime = performance.now();
       const frameTimes = [];
       const maxSamples = 10;
@@ -448,7 +448,7 @@
       requestAnimationFrame(updateFrameTime);
     </script>    
     <script type="module">
-      //LIMB
+      
       import * as THREE from '/assets/js/threejs/three.module.min.js';
       import { GLTFLoader } from '/assets/js/GLTFLoader.js';
   
@@ -456,33 +456,33 @@
        * TUNABLE PARAMETERS (ALL CAPS)
        ****************************************/
   
-      // INTRO ANIMATION (time-based)
-      const INTRO_TIME        = 3.0;   // seconds for the intro animation
+      
+      const INTRO_TIME        = 3.0;   
       const INTRO_Y_START     = -8;
       const INTRO_Y_END       = 0;
-      const INTRO_ROT_OFFSET  = -1;    // start rotation offset in radians
+      const INTRO_ROT_OFFSET  = -1;    
   
-      // DRAG & FLING
+      
       const DRAG_ROTATION_SCALE = 0.005; 
-      const MAX_VELOCITY        = 0.5;   // clamp fling velocity to avoid extremes
-      const MIN_VELOCITY        = 0.001; // if it goes below this, we set it to 0
-      const FRICTION            = 0.9;   // how quickly fling speed decays
+      const MAX_VELOCITY        = 0.5;   
+      const MIN_VELOCITY        = 0.001; 
+      const FRICTION            = 0.9;   
   
-      // TURNTABLE SPEED in RPM:
-      // If fling velocity is above this, friction eventually decays it to that speed, then it keeps spinning.
-      // Otherwise friction to 0.
+      
+      
+      
       const TURNTABLE_RPM      = 6.0;
   
-      // CAMERA
+      
       const CAMERA_Z           = 15;
   
       /****************************************
        * HELPER: convert RPM to radians/frame
        ****************************************/
       function rpmToRadPerFrame(rpm) {
-        // 1 rotation = 2π radians
-        // rpm * 2π => radians/min
-        // / 60 => radians/sec, / 60 => radians/frame @ ~60 fps
+        
+        
+        
         return (rpm * 2 * Math.PI) / (60 * 60);
       }
       const TURNTABLE_SPEED = rpmToRadPerFrame(TURNTABLE_RPM);
@@ -494,14 +494,14 @@
           return;
         }
   
-        // RENDERER
+        
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(container.clientWidth * 2, container.clientHeight);
         container.appendChild(renderer.domElement);
       
-        // CAMERA
+        
         const camera = new THREE.PerspectiveCamera(
           30,
           container.clientWidth * 2 / container.clientHeight,
@@ -510,10 +510,10 @@
         );
         camera.position.z = CAMERA_Z;
   
-        // SCENE
+        
         const scene = new THREE.Scene();
   
-        // LIGHTING
+        
         const directionalLight = new THREE.DirectionalLight(0xEFF1F5, 3.64);
         directionalLight.position.set(5, 10, 7.5);
         scene.add(directionalLight);
@@ -521,7 +521,7 @@
         const ambientLight = new THREE.AmbientLight(0xEFF1F5, 1.2);
         scene.add(ambientLight);
   
-        // MODEL
+        
         let Model = null;
 
         const modelName = container.getAttribute('data-model') || "Head";
@@ -531,7 +531,7 @@
         ModelLoader.load(modelUrl, function (gltf) {
           Model = gltf.scene;
   
-          // Start transforms
+          
           Model.position.y = INTRO_Y_START;
           Model.rotation.y = INTRO_ROT_OFFSET;
           Model.scale.set(0.9, 0.9, 0.9);
@@ -541,23 +541,23 @@
           console.error(error);
         });
   
-        // INTRO TIMING
+        
         let introStartTime = null;
         let animationComplete = false;
   
-        // DRAG/FLING
+        
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
         let isDragging = false;
         let previousMousePosition = { x: 0, timestamp: 0 };
         
-        // We'll track fling velocity
+        
         let angularVelocity = 0;
   
-        // We'll track if we plan to clamp to turntable after friction
+        
         let shouldClampToTurntable = false;
   
-        // HELPERS
+        
         function clamp01(x) {
           return Math.min(1, Math.max(0, x));
         }
@@ -565,7 +565,7 @@
           return 1 - (1 - t) * (1 - t);
         }
   
-        // MOUSE POSITION
+        
         function getMousePosition(event) {
           const rect = container.getBoundingClientRect();
           return {
@@ -574,11 +574,11 @@
           };
         }
   
-        // MOUSE EVENT HANDLERS
+        
         function onMouseDown(event) {
           if (!Model || !animationComplete) return;
   
-          // Check if user clicked on the model
+          
           const mousePos = getMousePosition(event);
           mouse.x = mousePos.x;
           mouse.y = mousePos.y;
@@ -591,7 +591,7 @@
               x: event.clientX,
               timestamp: event.timeStamp
             };
-            // Reset fling velocity
+            
             angularVelocity = 0;
           }
         }
@@ -600,10 +600,10 @@
           if (isDragging && Model) {
             const deltaX = event.clientX - previousMousePosition.x;
   
-            // Immediate rotation with dragging
+            
             Model.rotation.y += deltaX * DRAG_ROTATION_SCALE;
   
-            // Calculate fling velocity
+            
             let flingVel = deltaX * DRAG_ROTATION_SCALE;
             if (Math.abs(flingVel) > MAX_VELOCITY) {
               flingVel = Math.sign(flingVel) * MAX_VELOCITY;
@@ -621,9 +621,9 @@
           if (!Model || !isDragging) return;
           isDragging = false;
   
-          // We'll do friction after let go, but we note if we plan to clamp
-          // If fling velocity is above threshold, we eventually clamp to it
-          // else friction to 0
+          
+          
+          
           if (Math.abs(angularVelocity) >= TURNTABLE_SPEED) {
             shouldClampToTurntable = true;
           } else {
@@ -640,27 +640,27 @@
         window.addEventListener('touchend', onMouseUp);
   
   
-        // ANIMATION LOOP
+        
         function animate() {
           requestAnimationFrame(animate);
   
-          // Mark the intro start time on first frame
+          
           if (!introStartTime) {
             introStartTime = performance.now();
           }
   
           if (Model) {
-            // 1) TIME-BASED INTRO
+            
             if (!animationComplete) {
               const elapsed = (performance.now() - introStartTime) / 1000;
               let t = clamp01(elapsed / INTRO_TIME);
               t = easeOutQuad(t);
   
-              // Lerp position.y
+              
               const totalYDist = INTRO_Y_END - INTRO_Y_START;
               Model.position.y = INTRO_Y_START + totalYDist * t;
   
-              // Lerp rotation from INTRO_ROT_OFFSET to 0
+              
               Model.rotation.y = INTRO_ROT_OFFSET + (0 - INTRO_ROT_OFFSET) * t;
   
               if (elapsed >= INTRO_TIME) {
@@ -669,28 +669,28 @@
                 animationComplete = true;
               }
             }
-            // 2) POST-INTRO BEHAVIOR
+            
             else {
-              // Only apply friction if not dragging
+              
               if (!isDragging) {
-                // Multiply velocity by friction
+                
                 angularVelocity *= FRICTION;
   
-                // If we plan to clamp to turntable
+                
                 if (shouldClampToTurntable) {
-                  // Once we cross below turntable speed, clamp to it
+                  
                   if (Math.abs(angularVelocity) < TURNTABLE_SPEED) {
                     angularVelocity = Math.sign(angularVelocity) * TURNTABLE_SPEED;
-                    // (Now the model will keep spinning indefinitely at that speed.)
+                    
                   }
                 } else {
-                  // If not clamping, friction eventually goes to 0
+                  
                   if (Math.abs(angularVelocity) < MIN_VELOCITY) {
                     angularVelocity = 0;
                   }
                 }
   
-                // Finally, apply rotation
+                
                 Model.rotation.y += angularVelocity;
               }
             }
@@ -700,7 +700,7 @@
         }
         animate();
   
-        // RESIZE
+        
         window.addEventListener('resize', onWindowResize);
         function onWindowResize() {
           const w = container.clientWidth;
@@ -716,37 +716,37 @@
         }
       }
   
-      // HOOKS
+      
       document.addEventListener('DOMContentLoaded', init);
       barba.hooks.after(init);
   
       let lastFrameTime = performance.now();
       const frameTimes = [];
-      const maxSamples = 10; // Adjust this for more smoothing
+      const maxSamples = 10; 
   
       function updateFrameTime() {
           const now = performance.now();
           const frameTime = now - lastFrameTime;
           lastFrameTime = now;
   
-          // Store the frame time
+          
           frameTimes.push(frameTime);
   
-          // Keep the sample size small for recent smoothing
+          
           if (frameTimes.length > maxSamples) {
-              frameTimes.shift(); // Remove the oldest value
+              frameTimes.shift(); 
           }
   
-          // Compute the average
+          
           const avgFrameTime = frameTimes.reduce((a, b) => a + b, 0) / frameTimes.length;
   
-          // Update the DOM element
+          
           document.getElementById('frameGenTime').textContent = `Frame Gen Time: ${avgFrameTime.toFixed(1)}ms`;
   
           requestAnimationFrame(updateFrameTime);
       }
   
-      // Start tracking frame time
+      
       requestAnimationFrame(updateFrameTime);
   
     </script>
