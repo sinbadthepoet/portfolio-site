@@ -122,6 +122,14 @@ p{
   width: 100%;
   flex-grow: 1;
   min-width: 0;
+  min-height: 0;
+
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+canvas{
+  align-self: center;
 }
 
 .LimbContentWrapper{
@@ -152,7 +160,7 @@ p{
 
   min-height: 0;
 
-  background-color: rgba(239, 241, 245, 0.4);
+  background-color: rgba(239, 241, 245, 0.8);
 }
 
 .HeadingBox{
