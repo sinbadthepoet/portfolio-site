@@ -416,6 +416,11 @@
         createWaypointMarker('Game Design', { x: 400, y: 300 }, { x: 470, y: 300 }, 'right', 'core');
         createWaypointMarker('Narrative Design', { x: 900, y: 450 }, { x: 820, y: 400 }, 'left', 'arms');
         createWaypointMarker('Technical Foundations', { x: 250, y: 600 }, { x: 390, y: 550 }, 'right', 'legs');
+      
+        var layoutElement = document.getElementById('layoutName');
+        if (layoutElement) {
+            layoutElement.innerHTML = 'Latest 3D Layout: Hanger.html';
+        }
       }
     
       // HOOKS
@@ -703,6 +708,11 @@
           renderer.setSize(w, h);
           camera.aspect = w / h;
           camera.updateProjectionMatrix();
+        }
+
+        var layoutElement = document.getElementById('layoutName');
+        if (layoutElement) {
+            layoutElement.innerHTML = 'Latest 3D Layout: Limb.html';
         }
       }
   

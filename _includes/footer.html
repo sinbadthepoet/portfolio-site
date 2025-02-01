@@ -5,11 +5,9 @@
 
   <div class="exposedInfo flickerIn">
     <p id="cursorPos">Cursor X: 0.0% Y: 0.0%</p>
-  
-    <!-- Placeholders for rig data until we’re ready to hook them up -->
-    <p id="currentAnimation">Current Animation: RestPose.anim</p>
-    <p id="animTime">AnimTime: 100.0%</p>
-    <p id="frameGenTime">Frame Gen Time: 16.7ms</p>
+    <p id="TimeSinceReload">Time Since Page Reload:</p>
+    <p id="layoutName">Latest 3D Layout: Uninitialized</p>
+    <p id="frameGenTime">Frame Gen Time: 0.0ms</p>
   </div>
 </div>
 
@@ -18,16 +16,46 @@
   const cursorPosEl = document.getElementById('cursorPos');
   if (!cursorPosEl) return;
 
-  // Convert default top-left system to bottom-left system in percentages
+  
   const xPercent = (event.clientX / window.innerWidth) * 100;
-  // event.clientY is distance from TOP, so invert for bottom-left
+  
   const yPercent = (1 - (event.clientY / window.innerHeight)) * 100;
 
-  // Format to one decimal place
+  
   const xStr = xPercent.toFixed(1);
   const yStr = yPercent.toFixed(1);
 
-  // Update the exposed info text
+  
   cursorPosEl.textContent = `Cursor X: ${xStr}% Y: ${yStr}%`;
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var timeElement = document.getElementById('TimeSinceReload');
+    
+    if (timeElement) {
+        let startTime = Date.now();
+        
+        function updateTime() {
+            let elapsedTime = Math.floor((Date.now() - startTime) / 1000); 
+
+            let seconds = elapsedTime % 60;
+            let minutes = Math.floor(elapsedTime / 60) % 60;
+            let hours = Math.floor(elapsedTime / 3600);
+
+            let timeString = '';
+
+            if (hours > 0) {
+                timeString = `${hours}h${minutes}s`;
+            } else if (minutes > 0) {
+                timeString = `${minutes}m${seconds}s`;
+            } else {
+                timeString = `${seconds}s`;
+            }
+
+            timeElement.innerHTML = 'Time Since Page Reload: ' + timeString;
+        }
+
+        setInterval(updateTime, 1000); 
+    }
+});
 </script>
