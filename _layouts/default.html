@@ -518,7 +518,8 @@
   
         // MODEL
         let Model = null;
-        const modelName = "{{ page.model | default: 'Head' }}";
+
+        const modelName = container.getAttribute('data-model') || "Head";
         const modelUrl = `/assets/models/${modelName}.glb`;
   
         const ModelLoader = new GLTFLoader();
