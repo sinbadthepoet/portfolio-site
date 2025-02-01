@@ -6,7 +6,6 @@ title: Hanger
     {% include header.html %}
     <div data-barba="container" data-barba-namespace="home" class="barbaContainer">
         <div class="ContentContainer">
-            {{ content }}
             <script>
                 barba.init({
                     transitions: [{
@@ -24,6 +23,7 @@ title: Hanger
                     }]
                     });
             </script>
+            {{ content }}
         </div>
     </div>
     {% include footer.html %}

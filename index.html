@@ -3,5 +3,14 @@ layout: dashboard
 title: Hanger
 ---
 <script>
-//Transition to correct page
-</script>
+(function() {
+    var destination = '/limbs/head.html';
+    if (window.barba && typeof barba.go === 'function') {
+    // If Barba.js is available, use it for the redirect.
+    barba.go(destination);
+    } else {
+    // Fallback: use a standard redirect.
+    window.location.href = destination;
+    }
+})();
+</script>  

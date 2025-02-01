@@ -22,7 +22,7 @@
 
 @keyframes BounceInFromBelow {
   0% {
-    transform: translateX(-2500px);
+    transform: translateX(-2300px);
     transform: translateZ(-1);
   }
 
@@ -92,11 +92,11 @@ footer.flickerIn{
 }
 
 #hanger{
-  transform: translateY(1200px);
+  transform: translateX(-2500px);
 
   animation-name: BounceInFromBelow;
   animation-duration: 3s;
   //animation-timing-function: cubic-bezier(0.300, 1.395, 0.275, 1.010);
   animation-fill-mode: forwards;
-  animation-delay: 1s;
+  animation-delay: 0.5s;
 }
