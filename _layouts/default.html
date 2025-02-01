@@ -25,13 +25,13 @@
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(container.clientHeight, container.clientHeight);
+        renderer.setSize(container.clientHeight * 1.2, container.clientHeight);
         renderer.shadowMap.enabled = true;
         container.appendChild(renderer.domElement);
       
         // CAMERA
         const camera = new THREE.OrthographicCamera(
-          -12, 12,
+          -12 * 1.2, 12 * 1.2,
           12, -12,
           1, 1000
         );
