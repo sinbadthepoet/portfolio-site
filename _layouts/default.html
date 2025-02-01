@@ -15,6 +15,7 @@
       // =========================
       // WAYPOINT MARKER PARAMETERS
       // =========================
+      // Note: "opacityTransitionTime" now defines the highlight transition duration.
       const WAYPOINT_PARAMS = {
         fontFamily: 'Inter, sans-serif',
         fontWeight: 'bold',
@@ -23,7 +24,7 @@
         textOpacity: 1,             // Overall text opacity
         underlineColor: '#666',
         underlineThickness: '2px',  // Thickness for the underline & SVG line
-        opacityTransitionTime: 1  // Transition time in seconds
+        opacityTransitionTime: 0.3  // Transition time (in seconds) for highlighting changes
       };
     
       // Global storage for waypoint markers and overlay elements
@@ -35,10 +36,32 @@
       let raycaster, mouse;
       const clickableMeshes = [];
       let hoveredPart = null;  // Will be 'head', 'core', 'arms', or 'legs'
-      
+    
+      // Mapping for page navigation when clicked
+      const pageMapping = {
+        head: "/limbs/head.html",
+        core: "/limbs/chest.html",
+        arms: "/limbs/arms.html",
+        legs: "/limbs/legs.html"
+      };
+    
       // Colors for the meshes (using THREE.Color)
       const DEFAULT_MESH_COLOR = new THREE.Color(0xe7e7e7); // rgb(231,231,231)
       const NON_HOVERED_MESH_COLOR = new THREE.Color(0xa2a2a2); // rgb(162,162,162)
+    
+      // Global variable for mesh color transition timing.
+      let lastColorUpdateTime = performance.now();
+    
+      // ----------------------------------------------------
+      // Helper function to trigger navigation using Barba.js if available.
+      // ----------------------------------------------------
+      function navigateTo(url) {
+        if (typeof barba !== 'undefined' && typeof barba.go === 'function') {
+          barba.go(url);
+        } else {
+          window.location.href = url;
+        }
+      }
     
       // ----------------------------------------------------
       // Create a waypoint marker defined by two container points:
@@ -61,21 +84,45 @@
         markerDiv.style.fontSize = WAYPOINT_PARAMS.fontSize;
         markerDiv.style.color = WAYPOINT_PARAMS.textColor;
         markerDiv.style.opacity = WAYPOINT_PARAMS.textOpacity;
-        markerDiv.style.pointerEvents = 'none';
+        // Allow pointer events so that the marker can receive hover/click events.
+        markerDiv.style.pointerEvents = 'auto';
+        markerDiv.style.cursor = 'pointer';
         // Underline using border-bottom for visual effect.
         markerDiv.style.borderBottom = `${WAYPOINT_PARAMS.underlineThickness} solid ${WAYPOINT_PARAMS.underlineColor}`;
         markerDiv.style.textAlign = alignment;
-        // Enable CSS transitions for animated changes.
+        // Enable CSS transitions for animated changes (opacity and color).
         markerDiv.style.transition = `opacity ${WAYPOINT_PARAMS.opacityTransitionTime}s, color ${WAYPOINT_PARAMS.opacityTransitionTime}s`;
+    
+        // When hovering over the marker, set hoveredPart accordingly.
+        markerDiv.addEventListener('mouseenter', (e) => {
+          hoveredPart = marker.assoc;
+          updateWaypointStyles();
+          document.getElementById('hanger').style.cursor = 'pointer';
+        });
+        markerDiv.addEventListener('mouseleave', (e) => {
+          hoveredPart = null;
+          updateWaypointStyles();
+          document.getElementById('hanger').style.cursor = 'default';
+        });
+        // Also handle clicks on the marker.
+        markerDiv.addEventListener('click', (e) => {
+          e.stopPropagation();
+          navigateTo(pageMapping[marker.assoc]);
+        });
     
         waypointContainer.appendChild(markerDiv);
         marker.element = markerDiv;
     
         // Create an SVG <line> element for the connecting line.
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        // Set the stroke as the underlineColor (but we will control visibility via opacity).
         line.setAttribute('stroke', WAYPOINT_PARAMS.underlineColor);
-        // Remove 'px' from the thickness value when setting stroke-width.
+        // Set transition on opacity.
+        line.style.transition = `opacity ${WAYPOINT_PARAMS.opacityTransitionTime}s`;
+        // Set stroke-width (using setAttribute is acceptable for non-animated properties).
         line.setAttribute('stroke-width', WAYPOINT_PARAMS.underlineThickness.replace('px',''));
+        // Default full opacity.
+        line.style.opacity = '1';
         svgOverlay.appendChild(line);
         marker.lineElement = line;
     
@@ -124,44 +171,58 @@
     
       // ----------------------------------------------------
       // Update waypoint marker styles based on hoveredPart.
+      // Both the text marker and its connecting SVG line update their opacity.
       // ----------------------------------------------------
       function updateWaypointStyles() {
         markers.forEach(marker => {
           if (hoveredPart && marker.assoc === hoveredPart) {
             marker.element.style.opacity = 1;
             marker.element.style.color = "#000";
+            marker.lineElement.style.opacity = 1;
           } else if (hoveredPart) {
             marker.element.style.opacity = 0.3;
             marker.element.style.color = WAYPOINT_PARAMS.textColor;
+            marker.lineElement.style.opacity = 0.3;
           } else {
             marker.element.style.opacity = 1;
             marker.element.style.color = WAYPOINT_PARAMS.textColor;
+            marker.lineElement.style.opacity = 1;
           }
         });
       }
     
       // ----------------------------------------------------
-      // Update mesh colors for smooth transition.
+      // Update mesh colors for smooth transition using the transition parameter.
       // ----------------------------------------------------
       function updateMeshColors() {
-        // Loop through all clickable meshes.
+        const now = performance.now();
+        let delta = now - lastColorUpdateTime;
+        // Compute a lerp factor based on the defined transition time.
+        // Transition time is in seconds, so convert to milliseconds.
+        let lerpFactor = delta / (WAYPOINT_PARAMS.opacityTransitionTime * 1000);
+        if (lerpFactor > 1) lerpFactor = 1;
+    
         clickableMeshes.forEach(mesh => {
           let target;
-          // If no part is hovered, or this mesh belongs to the hovered part, use the default color.
           if (!hoveredPart || mesh.userData.part === hoveredPart) {
             target = DEFAULT_MESH_COLOR;
           } else {
             target = NON_HOVERED_MESH_COLOR;
           }
-          // Lerp the material color toward the target color.
-          mesh.material.color.lerp(target, 0.1);
+          mesh.material.color.lerp(target, lerpFactor);
         });
+        lastColorUpdateTime = now;
       }
     
       // ----------------------------------------------------
-      // Mouse event handlers for raycasting.
+      // Mouse event handlers for raycasting on the canvas.
       // ----------------------------------------------------
       function onDocumentMouseMove(event) {
+        // If the event target is a waypoint marker, let its own handlers deal with it.
+        if (event.target.classList.contains('waypoint-marker')) {
+          return;
+        }
+        const containerElem = document.getElementById('hanger');
         const rect = renderer.domElement.getBoundingClientRect();
         mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
         mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -174,23 +235,21 @@
             hoveredPart = part;
             updateWaypointStyles();
           }
+          containerElem.style.cursor = 'pointer';
         } else {
-          if (hoveredPart !== null) {
-            hoveredPart = null;
-            updateWaypointStyles();
-          }
+          hoveredPart = null;
+          updateWaypointStyles();
+          containerElem.style.cursor = 'default';
         }
       }
     
       function onDocumentClick(event) {
+        // If clicking on a waypoint marker, let its own click handler handle navigation.
+        if (event.target.classList.contains('waypoint-marker')) {
+          return;
+        }
         if (hoveredPart) {
-          const pageMapping = {
-            head: "/limbs/head.html",
-            core: "/limbs/chest.html",
-            arms: "/limbs/arms.html",
-            legs: "/limbs/legs.html"
-          };
-          window.location.href = pageMapping[hoveredPart];
+          navigateTo(pageMapping[hoveredPart]);
         }
       }
     
@@ -210,7 +269,7 @@
         waypointContainer.style.left = '0';
         waypointContainer.style.width = '100%';
         waypointContainer.style.height = '100%';
-        waypointContainer.style.pointerEvents = 'none'; // So markers do not block mouse events.
+        // (No pointerEvents override here so that markers can be interactive.)
         container.appendChild(waypointContainer);
     
         svgOverlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -327,9 +386,8 @@
         }
     
         // =========================
-        // MOUSE EVENT HANDLERS
+        // MOUSE EVENT HANDLERS (for canvas)
         // =========================
-        // Initialize raycaster and mouse vector.
         raycaster = new THREE.Raycaster();
         mouse = new THREE.Vector2();
         container.addEventListener('mousemove', onDocumentMouseMove, false);
@@ -348,7 +406,7 @@
     
         // =========================
         // Create waypoint markers with associations.
-        // The associations are:
+        // Associations:
         // 'head'    -> About Me
         // 'core'    -> Game Design
         // 'arms'    -> Narrative Design
@@ -383,8 +441,7 @@
         requestAnimationFrame(updateFrameTime);
       }
       requestAnimationFrame(updateFrameTime);
-    </script>         
-    
+    </script>    
     <script type="module">
       //LIMB
       import * as THREE from '/assets/js/threejs/three.module.min.js';
