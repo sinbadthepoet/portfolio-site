@@ -12,10 +12,6 @@
       import * as THREE from '/assets/js/threejs/three.module.min.js';
       import { GLTFLoader } from '/assets/js/GLTFLoader.js';
     
-      
-      
-      
-      
       const WAYPOINT_PARAMS = {
         fontFamily: 'Inter, sans-serif',
         fontWeight: 'bold',
@@ -26,17 +22,14 @@
         underlineThickness: '2px',  
         opacityTransitionTime: 0.3  
       };
-    
       
       const markers = [];
       let waypointContainer;
       let svgOverlay;
-    
       
       let raycaster, mouse;
       const clickableMeshes = [];
       let hoveredPart = null;  
-    
       
       const pageMapping = {
         head: "/limbs/head.html",
@@ -44,16 +37,11 @@
         arms: "/limbs/arms.html",
         legs: "/limbs/legs.html"
       };
-    
       
       const DEFAULT_MESH_COLOR = new THREE.Color(0xe7e7e7); 
       const NON_HOVERED_MESH_COLOR = new THREE.Color(0xa2a2a2); 
-    
       
       let lastColorUpdateTime = performance.now();
-    
-      
-      
       
       function navigateTo(url) {
         if (typeof barba !== 'undefined' && typeof barba.go === 'function') {
@@ -62,18 +50,9 @@
           window.location.href = url;
         }
       }
-    
-      
-      
-      
-      
-      
-      
-      
       
       function createWaypointMarker(text, textCenter, lineTarget, alignment = 'center', assoc) {
         const marker = { text, textCenter, lineTarget, alignment, assoc };
-    
         
         const markerDiv = document.createElement('div');
         markerDiv.classList.add('waypoint-marker');
@@ -93,7 +72,6 @@
         
         markerDiv.style.transition = `opacity ${WAYPOINT_PARAMS.opacityTransitionTime}s, color ${WAYPOINT_PARAMS.opacityTransitionTime}s`;
     
-        
         markerDiv.addEventListener('mouseenter', (e) => {
           hoveredPart = marker.assoc;
           updateWaypointStyles();
@@ -112,7 +90,6 @@
     
         waypointContainer.appendChild(markerDiv);
         marker.element = markerDiv;
-    
         
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         
@@ -128,28 +105,31 @@
     
         markers.push(marker);
       }
-    
-      
-      
-      
+
       function updateWaypointMarkers() {
+        const containerElem = document.getElementById('hanger');
+        const containerWidth = containerElem.clientWidth;
+        const containerHeight = containerElem.clientHeight;
         markers.forEach(marker => {
+          
+          const textCenterX = marker.textCenter.x * containerWidth;
+          const textCenterY = marker.textCenter.y * containerHeight;
+          const lineTargetX = marker.lineTarget.x * containerWidth;
+          const lineTargetY = marker.lineTarget.y * containerHeight;
           
           const width = marker.element.offsetWidth;
           const height = marker.element.offsetHeight;
           
-          
           let left;
           if (marker.alignment === 'left') {
-            left = marker.textCenter.x;
+            left = textCenterX;
           } else if (marker.alignment === 'right') {
-            left = marker.textCenter.x - width;
+            left = textCenterX - width;
           } else { 
-            left = marker.textCenter.x - width / 2;
+            left = textCenterX - width / 2;
           }
-          const top = marker.textCenter.y - height / 2;
+          const top = textCenterY - height / 2;
           marker.element.style.transform = `translate(${left}px, ${top}px)`;
-    
           
           let startX;
           if (marker.alignment === 'left') {
@@ -160,19 +140,14 @@
             startX = left + width / 2; 
           }
           const startY = top + height; 
-    
           
           marker.lineElement.setAttribute('x1', startX);
           marker.lineElement.setAttribute('y1', startY);
-          marker.lineElement.setAttribute('x2', marker.lineTarget.x);
-          marker.lineElement.setAttribute('y2', marker.lineTarget.y);
+          marker.lineElement.setAttribute('x2', lineTargetX);
+          marker.lineElement.setAttribute('y2', lineTargetY);
         });
       }
     
-      
-      
-      
-      
       function updateWaypointStyles() {
         markers.forEach(marker => {
           if (hoveredPart && marker.assoc === hoveredPart) {
@@ -191,13 +166,9 @@
         });
       }
     
-      
-      
-      
       function updateMeshColors() {
         const now = performance.now();
         let delta = now - lastColorUpdateTime;
-        
         
         let lerpFactor = delta / (WAYPOINT_PARAMS.opacityTransitionTime * 1000);
         if (lerpFactor > 1) lerpFactor = 1;
@@ -213,9 +184,6 @@
         });
         lastColorUpdateTime = now;
       }
-    
-      
-      
       
       function onDocumentMouseMove(event) {
         
@@ -253,15 +221,11 @@
         }
       }
     
-      
-      
-      
       let renderer, camera; 
       function init() {
         const container = document.getElementById('hanger');
         if (!container) return;
     
-        
         waypointContainer = document.createElement('div');
         waypointContainer.id = 'waypointContainer';
         waypointContainer.style.position = 'absolute';
@@ -282,9 +246,6 @@
         svgOverlay.style.pointerEvents = 'none';
         container.appendChild(svgOverlay);
     
-        
-        
-        
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setClearColor(0x000000, 0);
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -304,7 +265,6 @@
     
         const scene = new THREE.Scene();
     
-        
         const directionalLight = new THREE.DirectionalLight(0xEFF1F5, 2);
         directionalLight.position.set(5, 30, 30);
         directionalLight.castShadow = true;
@@ -319,7 +279,6 @@
     
         const ambientLight = new THREE.AmbientLight(0xEFF1F5, 2);
         scene.add(ambientLight);
-    
         
         const planeGeometry = new THREE.PlaneGeometry(20, 25);
         const planeMaterial = new THREE.ShadowMaterial();
@@ -329,14 +288,10 @@
         plane.receiveShadow = true;
         plane.position.z = -8;
         scene.add(plane);
-    
-        
-        
         
         let Head = null, Core = null, Arms = null, Legs = null;
         const cast = true, recv = true;
         const ModelLoader = new GLTFLoader();
-    
         
         function processModel(gltf, partName) {
           const group = gltf.scene;
@@ -369,9 +324,6 @@
           Legs = processModel(gltf, 'legs');
         }, undefined, function (error) { console.error(error); });
     
-        
-        
-        
         window.addEventListener('resize', onWindowResize);
         function onWindowResize() {
           const w = container.clientWidth;
@@ -385,17 +337,11 @@
           updateWaypointMarkers();
         }
     
-        
-        
-        
         raycaster = new THREE.Raycaster();
         mouse = new THREE.Vector2();
         container.addEventListener('mousemove', onDocumentMouseMove, false);
         container.addEventListener('click', onDocumentClick, false);
     
-        
-        
-        
         function animate() {
           requestAnimationFrame(animate);
           renderer.render(scene, camera);
@@ -404,32 +350,15 @@
         }
         animate();
     
-        
-        
-        
-        
-        
-        
-        
-        
-        createWaypointMarker('About Me', { x: 650, y: 100 }, { x: 585, y: 150 }, 'left', 'head');
-        createWaypointMarker('Game Design', { x: 400, y: 300 }, { x: 470, y: 300 }, 'right', 'core');
-        createWaypointMarker('Narrative Design', { x: 900, y: 450 }, { x: 820, y: 400 }, 'left', 'arms');
-        createWaypointMarker('Technical Foundations', { x: 250, y: 600 }, { x: 390, y: 550 }, 'right', 'legs');
-      
-        var layoutElement = document.getElementById('layoutName');
-        if (layoutElement) {
-            layoutElement.innerHTML = 'Latest 3D Layout: Hanger.html';
-        }
+        createWaypointMarker('About Me', { x: 650/1200, y: 100/1009 }, { x: 585/1200, y: 150/1009 }, 'left', 'head');
+        createWaypointMarker('Game Design', { x: 400/1200, y: 300/1009 }, { x: 470/1200, y: 300/1009 }, 'right', 'core');
+        createWaypointMarker('Narrative Design', { x: 900/1200, y: 450/1009 }, { x: 820/1200, y: 400/1009 }, 'left', 'arms');
+        createWaypointMarker('Technical Foundations', { x: 250/1200, y: 600/1009 }, { x: 390/1200, y: 550/1009 }, 'right', 'legs');
       }
     
-      
       document.addEventListener('DOMContentLoaded', init);
       barba.hooks.after(init);
     
-      
-      
-      
       let lastFrameTime = performance.now();
       const frameTimes = [];
       const maxSamples = 10;
@@ -446,7 +375,8 @@
         requestAnimationFrame(updateFrameTime);
       }
       requestAnimationFrame(updateFrameTime);
-    </script>    
+    </script>
+            
     <script type="module">
       
       import * as THREE from '/assets/js/threejs/three.module.min.js';
