@@ -142,6 +142,9 @@
           const markerWidth = marker.element.offsetWidth;
           const markerHeight = marker.element.offsetHeight;
 
+          let textLinkX = textPosX;
+          let textLinkY = textPosY + markerHeight - 1;
+
           switch(marker.alignment) {
             case 'left':
               break;
@@ -150,13 +153,10 @@
               break;
             default:
               //Center
-              textPosX -= markerWidth / 2;              
+              textPosX -= markerWidth / 2;   
           }
           
           marker.element.style.transform = `translate(${textPosX}px, ${textPosY}px)`;
-
-          const textLinkX = textPosX;
-          const textLinkY = textPosY + markerHeight - 1;
 
           marker.lineElement.setAttribute('x1', textLinkX);
           marker.lineElement.setAttribute('y1', textLinkY);
@@ -383,10 +383,10 @@
 
         container.appendChild(svgOverlay);
 
-        createWaypointMarker('About Me', { x: 0.2, y: 0 }, { x: 0, y: 0 }, 'center', 'head');
-        createWaypointMarker('Game Design', { x: -0.2, y: 0.2 }, { x: 0, y: 0 }, 'center', 'core');
-        createWaypointMarker('Narrative Design', { x: 0, y: 0.4 }, { x: 0, y: 0 }, 'center', 'arms');
-        createWaypointMarker('Technical Foundations', { x: 0, y: 0.8 }, { x: 0, y: 0 }, 'center', 'legs');
+        createWaypointMarker('About Me', { x: 0.1, y: 0.015 }, { x: 0.025, y: 0.09 }, 'left', 'head');
+        createWaypointMarker('Game Design', { x: -0.2, y: 0.25 }, { x: -0.117, y: 0.268 }, 'right', 'core');
+        createWaypointMarker('Narrative Design', { x: 0.4, y: 0.42 }, { x: 0.299, y: 0.38 }, 'left', 'arms');
+        createWaypointMarker('Technical Foundations', { x: -0.35, y: 0.6 }, { x: -0.213, y: 0.555 }, 'right', 'legs');
       }
 
       document.addEventListener('DOMContentLoaded', init);
