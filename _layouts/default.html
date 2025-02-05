@@ -73,7 +73,6 @@
         return group;
       }
       
-      ////IMPLEMENT LINES////
       function createWaypointMarker(text, textPos, lineTarget, alignment = 'center', assoc) {
         //Position is set in the UpdateWaypoint function
 
@@ -82,18 +81,13 @@
         
         markerDiv.classList.add('waypoint-marker');
         markerDiv.textContent = text;
-        
         markerDiv.style.fontFamily = WAYPOINT_PARAMS.fontFamily;
         markerDiv.style.fontWeight = WAYPOINT_PARAMS.fontWeight;
         markerDiv.style.fontSize = WAYPOINT_PARAMS.fontSize;
         markerDiv.style.color = WAYPOINT_PARAMS.textColor;
-        
         markerDiv.style.borderBottom = `${WAYPOINT_PARAMS.underlineThickness} solid ${WAYPOINT_PARAMS.textColor}`;
-        
         markerDiv.style.textAlign = alignment;
-        
         markerDiv.style.position = 'absolute';
-        
         markerDiv.style.cursor = 'pointer';
         markerDiv.style.transition = `opacity ${WAYPOINT_PARAMS.transitionTime}s`;
         
@@ -114,24 +108,18 @@
 
         waypointContainer.appendChild(markerDiv);
         marker.element = markerDiv;
-        
-        markers.push(marker);
-        /*
+
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        
-        line.setAttribute('stroke', WAYPOINT_PARAMS.underlineColor);
-        
-        line.style.transition = `opacity ${WAYPOINT_PARAMS.opacityTransitionTime}s`;
-        
-        line.setAttribute('stroke-width', WAYPOINT_PARAMS.underlineThickness.replace('px',''));
-        
+        line.setAttribute('stroke', WAYPOINT_PARAMS.textColor);
+        line.style.transition = `opacity ${WAYPOINT_PARAMS.transitionTime}s`;
         line.style.opacity = '1';
+        line.setAttribute('stroke-width', WAYPOINT_PARAMS.underlineThickness.replace('px',''));
         svgOverlay.appendChild(line);
         marker.lineElement = line;
-        */
+        
+        markers.push(marker);
       }
 
-      ////IMPLEMENT LINE////
       function updateWaypointMarkers() {
         const containerElem = document.getElementById('hanger');
         const cW = containerElem.clientWidth;
@@ -143,12 +131,16 @@
           //Make the position values relative to the container height.
           let textPosY = marker.textPos.y * cH;
           let textPosX = marker.textPos.x * cH;
+          let lineTargetX = marker.lineTarget.x * cH;
+          let lineTargetY = marker.lineTarget.y * cH;
 
           //Make the position relative to the vertical center line of the div.
           textPosX = textPosX + cW / 2;
+          lineTargetX = lineTargetX + cW / 2;
           
           //Change Position Based on Alignment
           const markerWidth = marker.element.offsetWidth;
+          const markerHeight = marker.element.offsetHeight;
 
           switch(marker.alignment) {
             case 'left':
@@ -162,51 +154,33 @@
           }
           
           marker.element.style.transform = `translate(${textPosX}px, ${textPosY}px)`;
-        });
-        /*
-          
-          const textCenterX = marker.textCenter.x * containerWidth;
-          const textCenterY = marker.textCenter.y * containerHeight;
-          const lineTargetX = marker.lineTarget.x * containerWidth;
-          const lineTargetY = marker.lineTarget.y * containerHeight;
-          
-          
-          
-          let startX;
-          if (marker.alignment === 'left') {
-            startX = left; 
-          } else if (marker.alignment === 'right') {
-            startX = left + width; 
-          } else { 
-            startX = left + width / 2; 
-          }
-          const startY = top + height; 
-          
-          marker.lineElement.setAttribute('x1', startX);
-          marker.lineElement.setAttribute('y1', startY);
+
+          const textLinkX = textPosX;
+          const textLinkY = textPosY + markerHeight - 1;
+
+          marker.lineElement.setAttribute('x1', textLinkX);
+          marker.lineElement.setAttribute('y1', textLinkY);
           marker.lineElement.setAttribute('x2', lineTargetX);
           marker.lineElement.setAttribute('y2', lineTargetY);
         });
-        */
       }
-      
-      ////IMPLEMENT LINE////
+
       function updateWaypointStyles() {
         markers.forEach(marker => {
           //If this is the part we're hovering over
           if (hoveredPart && marker.assoc === hoveredPart) {
             marker.element.style.opacity = 1;
             marker.element.style.color = "#000";
-            //marker.lineElement.style.opacity = 1;
+            marker.lineElement.style.opacity = 1;
           //If a part is being hovered over, but not this one.
           } else if (hoveredPart) {
             marker.element.style.opacity = WAYPOINT_PARAMS.nonHighlightOpacity;
             marker.element.style.color = WAYPOINT_PARAMS.textColor;
-            //marker.lineElement.style.opacity = 0.3;
+            marker.lineElement.style.opacity = WAYPOINT_PARAMS.nonHighlightOpacity;
           } else {
             marker.element.style.opacity = 1;
             marker.element.style.color = WAYPOINT_PARAMS.textColor;
-            //marker.lineElement.style.opacity = 1;
+            marker.lineElement.style.opacity = 1;
           }
         });
       }
@@ -227,7 +201,6 @@
             target = NON_HOVERED_MESH_COLOR;
           }
           if (!accessedMaterials.includes(mesh.material)) {
-            console.log(accessedMaterials);
             mesh.material.color.lerp(target, lerpFactor);
             accessedMaterials.push(mesh.material);
           }
@@ -399,16 +372,16 @@
         
         container.appendChild(waypointContainer);
 
-        // svgOverlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        // svgOverlay.id = 'svgOverlay';
-        // svgOverlay.style.position = 'absolute';
-        // svgOverlay.style.top = '0';
-        // svgOverlay.style.left = '0';
-        // svgOverlay.style.width = '100%';
-        // svgOverlay.style.height = '100%';
-        // svgOverlay.style.pointerEvents = 'none';
+        svgOverlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svgOverlay.id = 'svgOverlay';
+        svgOverlay.style.position = 'absolute';
+        svgOverlay.style.top = '0';
+        svgOverlay.style.left = '0';
+        svgOverlay.style.width = '100%';
+        svgOverlay.style.height = '100%';
+        svgOverlay.style.pointerEvents = 'none';
 
-        // container.appendChild(svgOverlay);
+        container.appendChild(svgOverlay);
 
         createWaypointMarker('About Me', { x: 0.2, y: 0 }, { x: 0, y: 0 }, 'center', 'head');
         createWaypointMarker('Game Design', { x: -0.2, y: 0.2 }, { x: 0, y: 0 }, 'center', 'core');
