@@ -29,16 +29,26 @@ h2{
   font-size: clamp(1rem, 1vw, 1.65rem);
 }
 
+h3{
+  font-weight: 900;
+  font-size: 2em;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
 footer {
   font-size: clamp(0.675rem, 1vw, 1rem);
   line-height: 1.4;
   font-weight: 200;
 }
 
-p{
+p, li{
   font-weight: 200;
   font-size: clamp(0.75rem, 1vw, 1rem);
   text-align: justify;
+  strong{
+    font-weight:300;
+  }
 }
 
 .RootContainer{
@@ -163,6 +173,11 @@ canvas{
   min-height: 0;
 
   background-color: rgba(239, 241, 245, 0.8);
+
+  a{
+    font-weight: 300;
+    border-bottom: 1px solid black;
+  }
 }
 
 .HeadingBox{
@@ -188,6 +203,9 @@ canvas{
   flex: 1 1 0;
   min-height: 0;
   overflow-y: scroll;
+
+  padding-left: 6px;
+  padding-right: 6px;
 
   h1{
     font-size: 4rem;
@@ -228,12 +246,16 @@ canvas{
 
   .PreviewImage{
     width: 20%;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
   }
 
   .PostInfo{
     width: 80%;
     min-height: 0;
-    overflow-y: scroll;
+    overflow-y: hidden;
   }
 
   .PreviewImage, .PostInfo{
